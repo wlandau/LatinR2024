@@ -593,12 +593,24 @@ r &amp;= \sum_{m = 1}^M I \left [ \theta^{(m)} &lt; \theta^{\text{sim}} \right ]
 </section>
 <section id="step-3-understand-the-pipeline" class="slide level2">
 <h2>Step 3: understand the pipeline</h2>
+<div style="font-size:80%">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">tar_visnetwork</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">tar_mermaid</span>(</span>
+<span id="cb5-2"><a href="#cb5-2"></a>  <span class="at">targets_only =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb5-3"><a href="#cb5-3"></a>  <span class="at">names =</span> <span class="fu">contains</span>(<span class="fu">c</span>(<span class="st">"unstructured"</span>, <span class="st">"compound_symmetry"</span>))</span>
+<span id="cb5-4"><a href="#cb5-4"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+
+<img data-src="./images/graph-mermaid.png" class="r-stretch"></section>
+<section id="step-3-understand-the-pipeline-1" class="slide level2">
+<h2>Step 3: understand the pipeline</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">tar_visnetwork</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 <img data-src="./images/graph-full.png" class="r-stretch"></section>
-<section id="step-3-understand-the-pipeline-1" class="slide level2">
+<section id="step-3-understand-the-pipeline-2" class="slide level2">
 <h2>Step 3: understand the pipeline</h2>
 <div>
 <ul>
@@ -607,7 +619,7 @@ r &amp;= \sum_{m = 1}^M I \left [ \theta^{(m)} &lt; \theta^{\text{sim}} \right ]
 </div>
 
 <img data-src="./images/graph-highlight.png" class="r-stretch"></section>
-<section id="step-3-understand-the-pipeline-2" class="slide level2">
+<section id="step-3-understand-the-pipeline-3" class="slide level2">
 <h2>Step 3: understand the pipeline</h2>
 <div>
 <ul>
@@ -616,75 +628,75 @@ r &amp;= \sum_{m = 1}^M I \left [ \theta^{(m)} &lt; \theta^{\text{sim}} \right ]
 </div>
 
 <img data-src="./images/graph-zoom.png" class="r-stretch"></section>
-<section id="step-3-understand-the-pipeline-3" class="slide level2">
+<section id="step-3-understand-the-pipeline-4" class="slide level2">
 <h2>Step 3: understand the pipeline</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">tar_outdated</span>()</span>
-<span id="cb6-2"><a href="#cb6-2"></a><span class="co">#&gt;  [1] "ranks_batch_compound_symmetry"            </span></span>
-<span id="cb6-3"><a href="#cb6-3"></a><span class="co">#&gt;  [2] "ranks_moving_average"                     </span></span>
-<span id="cb6-4"><a href="#cb6-4"></a><span class="co">#&gt;  [3] "ranks_diagonal"                           </span></span>
-<span id="cb6-5"><a href="#cb6-5"></a><span class="co">#&gt;  [4] "results_diagonal"                         </span></span>
-<span id="cb6-6"><a href="#cb6-6"></a><span class="co">#&gt;  [5] "prior_diagonal"                           </span></span>
-<span id="cb6-7"><a href="#cb6-7"></a><span class="co">#&gt;  [6] "ranks_batch_autoregressive"               </span></span>
-<span id="cb6-8"><a href="#cb6-8"></a><span class="co">#&gt;  [7] "results_moving_average"                   </span></span>
-<span id="cb6-9"><a href="#cb6-9"></a><span class="co">#&gt;  [8] "prior_unstructured"                       </span></span>
-<span id="cb6-10"><a href="#cb6-10"></a><span class="co">#&gt;  [9] "prior_compound_symmetry"                  </span></span>
-<span id="cb6-11"><a href="#cb6-11"></a><span class="co">#&gt; [10] "results_subgroup"                         </span></span>
-<span id="cb6-12"><a href="#cb6-12"></a><span class="co">#&gt; [11] "prior_autoregressive_moving_average"      </span></span>
-<span id="cb6-13"><a href="#cb6-13"></a><span class="co">#&gt; [12] "results_compound_symmetry"                </span></span>
-<span id="cb6-14"><a href="#cb6-14"></a><span class="co">#&gt; [13] "results_autoregressive_moving_average"    </span></span>
-<span id="cb6-15"><a href="#cb6-15"></a><span class="co">#&gt; [14] "ranks_subgroup"                           </span></span>
-<span id="cb6-16"><a href="#cb6-16"></a><span class="co">#&gt; [15] "ranks_compound_symmetry"                  </span></span>
-<span id="cb6-17"><a href="#cb6-17"></a><span class="co">#&gt; [16] "prior_autoregressive"                     </span></span>
-<span id="cb6-18"><a href="#cb6-18"></a><span class="co">#&gt; [17] "prior_moving_average"                     </span></span>
-<span id="cb6-19"><a href="#cb6-19"></a><span class="co">#&gt; [18] "ranks_batch_diagonal"                     </span></span>
-<span id="cb6-20"><a href="#cb6-20"></a><span class="co">#&gt; [19] "ranks_batch_subgroup"                     </span></span>
-<span id="cb6-21"><a href="#cb6-21"></a><span class="co">#&gt; [20] "ranks_autoregressive"                     </span></span>
-<span id="cb6-22"><a href="#cb6-22"></a><span class="co">#&gt; [21] "ranks_batch_moving_average"               </span></span>
-<span id="cb6-23"><a href="#cb6-23"></a><span class="co">#&gt; [22] "ranks_batch_autoregressive_moving_average"</span></span>
-<span id="cb6-24"><a href="#cb6-24"></a><span class="co">#&gt; [23] "results_unstructured"                     </span></span>
-<span id="cb6-25"><a href="#cb6-25"></a><span class="co">#&gt; [24] "ranks_batch_unstructured"                 </span></span>
-<span id="cb6-26"><a href="#cb6-26"></a><span class="co">#&gt; [25] "results_autoregressive"                   </span></span>
-<span id="cb6-27"><a href="#cb6-27"></a><span class="co">#&gt; [26] "prior_subgroup"                           </span></span>
-<span id="cb6-28"><a href="#cb6-28"></a><span class="co">#&gt; [27] "ranks_autoregressive_moving_average"      </span></span>
-<span id="cb6-29"><a href="#cb6-29"></a><span class="co">#&gt; [28] "ranks_unstructured"                    </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">tar_outdated</span>()</span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="co">#&gt;  [1] "ranks_batch_compound_symmetry"            </span></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="co">#&gt;  [2] "ranks_moving_average"                     </span></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="co">#&gt;  [3] "ranks_diagonal"                           </span></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="co">#&gt;  [4] "results_diagonal"                         </span></span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="co">#&gt;  [5] "prior_diagonal"                           </span></span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="co">#&gt;  [6] "ranks_batch_autoregressive"               </span></span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="co">#&gt;  [7] "results_moving_average"                   </span></span>
+<span id="cb7-9"><a href="#cb7-9"></a><span class="co">#&gt;  [8] "prior_unstructured"                       </span></span>
+<span id="cb7-10"><a href="#cb7-10"></a><span class="co">#&gt;  [9] "prior_compound_symmetry"                  </span></span>
+<span id="cb7-11"><a href="#cb7-11"></a><span class="co">#&gt; [10] "results_subgroup"                         </span></span>
+<span id="cb7-12"><a href="#cb7-12"></a><span class="co">#&gt; [11] "prior_autoregressive_moving_average"      </span></span>
+<span id="cb7-13"><a href="#cb7-13"></a><span class="co">#&gt; [12] "results_compound_symmetry"                </span></span>
+<span id="cb7-14"><a href="#cb7-14"></a><span class="co">#&gt; [13] "results_autoregressive_moving_average"    </span></span>
+<span id="cb7-15"><a href="#cb7-15"></a><span class="co">#&gt; [14] "ranks_subgroup"                           </span></span>
+<span id="cb7-16"><a href="#cb7-16"></a><span class="co">#&gt; [15] "ranks_compound_symmetry"                  </span></span>
+<span id="cb7-17"><a href="#cb7-17"></a><span class="co">#&gt; [16] "prior_autoregressive"                     </span></span>
+<span id="cb7-18"><a href="#cb7-18"></a><span class="co">#&gt; [17] "prior_moving_average"                     </span></span>
+<span id="cb7-19"><a href="#cb7-19"></a><span class="co">#&gt; [18] "ranks_batch_diagonal"                     </span></span>
+<span id="cb7-20"><a href="#cb7-20"></a><span class="co">#&gt; [19] "ranks_batch_subgroup"                     </span></span>
+<span id="cb7-21"><a href="#cb7-21"></a><span class="co">#&gt; [20] "ranks_autoregressive"                     </span></span>
+<span id="cb7-22"><a href="#cb7-22"></a><span class="co">#&gt; [21] "ranks_batch_moving_average"               </span></span>
+<span id="cb7-23"><a href="#cb7-23"></a><span class="co">#&gt; [22] "ranks_batch_autoregressive_moving_average"</span></span>
+<span id="cb7-24"><a href="#cb7-24"></a><span class="co">#&gt; [23] "results_unstructured"                     </span></span>
+<span id="cb7-25"><a href="#cb7-25"></a><span class="co">#&gt; [24] "ranks_batch_unstructured"                 </span></span>
+<span id="cb7-26"><a href="#cb7-26"></a><span class="co">#&gt; [25] "results_autoregressive"                   </span></span>
+<span id="cb7-27"><a href="#cb7-27"></a><span class="co">#&gt; [26] "prior_subgroup"                           </span></span>
+<span id="cb7-28"><a href="#cb7-28"></a><span class="co">#&gt; [27] "ranks_autoregressive_moving_average"      </span></span>
+<span id="cb7-29"><a href="#cb7-29"></a><span class="co">#&gt; [28] "ranks_unstructured"                    </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="step-4-run-the-pipeline" class="slide level2">
 <h2>Step 4: run the pipeline</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">tar_make</span>()</span>
-<span id="cb7-2"><a href="#cb7-2"></a><span class="co">#&gt; ...</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a><span class="co">#&gt; ▶ dispatched target prior_subgroup</span></span>
-<span id="cb7-4"><a href="#cb7-4"></a><span class="co">#&gt; ▶ dispatched target prior_moving_average</span></span>
-<span id="cb7-5"><a href="#cb7-5"></a><span class="co">#&gt; ▶ dispatched target prior_diagonal</span></span>
-<span id="cb7-6"><a href="#cb7-6"></a><span class="co">#&gt; ...</span></span>
-<span id="cb7-7"><a href="#cb7-7"></a><span class="co">#&gt; ▶ dispatched branch ranks_moving_average_0622a4a0a1459592</span></span>
-<span id="cb7-8"><a href="#cb7-8"></a><span class="co">#&gt; ▶ dispatched branch ranks_autoregressive_average_4d6e2b84dfce31bc</span></span>
-<span id="cb7-9"><a href="#cb7-9"></a><span class="co">#&gt; ● completed branch ranks_unstructured_391a8253aae8fc3e [1.321 hours]</span></span>
-<span id="cb7-10"><a href="#cb7-10"></a><span class="co">#&gt; ● completed branch ranks_unstructured_6fc2a563c4c2fecc [1.265 hours]</span></span>
-<span id="cb7-11"><a href="#cb7-11"></a><span class="co">#&gt; ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">tar_make</span>()</span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="co">#&gt; ...</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="co">#&gt; ▶ dispatched target prior_subgroup</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="co">#&gt; ▶ dispatched target prior_moving_average</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="co">#&gt; ▶ dispatched target prior_diagonal</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="co">#&gt; ...</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="co">#&gt; ▶ dispatched branch ranks_moving_average_0622a4a0a1459592</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="co">#&gt; ▶ dispatched branch ranks_autoregressive_average_4d6e2b84dfce31bc</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="co">#&gt; ● completed branch ranks_unstructured_391a8253aae8fc3e [1.321 hours]</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="co">#&gt; ● completed branch ranks_unstructured_6fc2a563c4c2fecc [1.265 hours]</span></span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="co">#&gt; ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="step-5-inspect-results" class="slide level2">
 <h2>Step 5: inspect results</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">tar_read</span>(ranks_unstructured)</span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="co">#&gt; # A tibble: 1,000 × 19</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a><span class="co">#&gt;    b_groupgroup_1 b_groupgroup_2 b_groupgroup_3 b_timetime_2</span></span>
-<span id="cb8-4"><a href="#cb8-4"></a><span class="co">#&gt;             &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;        &lt;dbl&gt;</span></span>
-<span id="cb8-5"><a href="#cb8-5"></a><span class="co">#&gt;  1           4104           2573           3593         8346</span></span>
-<span id="cb8-6"><a href="#cb8-6"></a><span class="co">#&gt;  2          11074          10962          10986         2911</span></span>
-<span id="cb8-7"><a href="#cb8-7"></a><span class="co">#&gt;  3           9407          10515           9904         2703</span></span>
-<span id="cb8-8"><a href="#cb8-8"></a><span class="co">#&gt;  4           6878             28            728         9672</span></span>
-<span id="cb8-9"><a href="#cb8-9"></a><span class="co">#&gt;  5           3467           3365           3510        11599</span></span>
-<span id="cb8-10"><a href="#cb8-10"></a><span class="co">#&gt;  6           6156           7975           6034         9547</span></span>
-<span id="cb8-11"><a href="#cb8-11"></a><span class="co">#&gt;  7           6971           5843           1357        11736</span></span>
-<span id="cb8-12"><a href="#cb8-12"></a><span class="co">#&gt;  8           1289            762           3830        10178</span></span>
-<span id="cb8-13"><a href="#cb8-13"></a><span class="co">#&gt;  9           8738           6655          10501         2387</span></span>
-<span id="cb8-14"><a href="#cb8-14"></a><span class="co">#&gt; 10           7985           7380           6802         6918</span></span>
-<span id="cb8-15"><a href="#cb8-15"></a><span class="co">#&gt; # ℹ 990 more rows</span></span>
-<span id="cb8-16"><a href="#cb8-16"></a><span class="co">#&gt; # ℹ 15 more variables...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">tar_read</span>(ranks_unstructured)</span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="co">#&gt; # A tibble: 1,000 × 19</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="co">#&gt;    b_groupgroup_1 b_groupgroup_2 b_groupgroup_3 b_timetime_2</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="co">#&gt;             &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;        &lt;dbl&gt;</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="co">#&gt;  1           4104           2573           3593         8346</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="co">#&gt;  2          11074          10962          10986         2911</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="co">#&gt;  3           9407          10515           9904         2703</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="co">#&gt;  4           6878             28            728         9672</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="co">#&gt;  5           3467           3365           3510        11599</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a><span class="co">#&gt;  6           6156           7975           6034         9547</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a><span class="co">#&gt;  7           6971           5843           1357        11736</span></span>
+<span id="cb9-12"><a href="#cb9-12"></a><span class="co">#&gt;  8           1289            762           3830        10178</span></span>
+<span id="cb9-13"><a href="#cb9-13"></a><span class="co">#&gt;  9           8738           6655          10501         2387</span></span>
+<span id="cb9-14"><a href="#cb9-14"></a><span class="co">#&gt; 10           7985           7380           6802         6918</span></span>
+<span id="cb9-15"><a href="#cb9-15"></a><span class="co">#&gt; # ℹ 990 more rows</span></span>
+<span id="cb9-16"><a href="#cb9-16"></a><span class="co">#&gt; # ℹ 15 more variables...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="step-5-inspect-results-1" class="slide level2">
@@ -698,28 +710,28 @@ r &amp;= \sum_{m = 1}^M I \left [ \theta^{(m)} &lt; \theta^{\text{sim}} \right ]
 <section id="step-6-iterate-as-needed" class="slide level2">
 <h2>Step 6: iterate as needed</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">tar_make</span>()</span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="co">#&gt; ...</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a><span class="co">#&gt; ✔ skipped target prior_subgroup</span></span>
-<span id="cb9-4"><a href="#cb9-4"></a><span class="co">#&gt; ▶ dispatched target unstructured</span></span>
-<span id="cb9-5"><a href="#cb9-5"></a><span class="co">#&gt; ...</span></span>
-<span id="cb9-6"><a href="#cb9-6"></a><span class="co">#&gt; ✔ skipped branch ranks_subgroup_42f1f9eb12129c61</span></span>
-<span id="cb9-7"><a href="#cb9-7"></a><span class="co">#&gt; ▶ dispatched branch ranks_unstructured_a5f4994d5939727e</span></span>
-<span id="cb9-8"><a href="#cb9-8"></a><span class="co">#&gt; ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">tar_make</span>()</span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="co">#&gt; ...</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="co">#&gt; ✔ skipped target prior_subgroup</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="co">#&gt; ▶ dispatched target unstructured</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="co">#&gt; ...</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="co">#&gt; ✔ skipped branch ranks_subgroup_42f1f9eb12129c61</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="co">#&gt; ▶ dispatched branch ranks_unstructured_a5f4994d5939727e</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="co">#&gt; ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="step-6-iterate-as-needed-1" class="slide level2">
 <h2>Step 6: iterate as needed</h2>
 <p><br></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">tar_outdated</span>()</span>
-<span id="cb10-2"><a href="#cb10-2"></a><span class="co">#&gt; character(0)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">tar_outdated</span>()</span>
+<span id="cb11-2"><a href="#cb11-2"></a><span class="co">#&gt; character(0)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><br></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">tar_make</span>()</span>
-<span id="cb11-2"><a href="#cb11-2"></a><span class="co">#&gt; ...</span></span>
-<span id="cb11-3"><a href="#cb11-3"></a><span class="co">#&gt; ✔ skipped pipeline [1.23 minutes]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">tar_make</span>()</span>
+<span id="cb12-2"><a href="#cb12-2"></a><span class="co">#&gt; ...</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a><span class="co">#&gt; ✔ skipped pipeline [1.23 minutes]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="recap" class="slide level2">

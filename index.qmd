@@ -203,6 +203,21 @@ list(
 
 ## Step 3: understand the pipeline
 
+::: {style="font-size:80%"}
+
+```{r}
+tar_mermaid(
+  targets_only = TRUE,
+  names = contains(c("unstructured", "compound_symmetry"))
+)
+```
+
+:::
+
+![](./images/graph-mermaid.png)
+
+## Step 3: understand the pipeline
+
 ```{r}
 tar_visnetwork()
 ```
