@@ -57,7 +57,7 @@ knitr::opts_chunk$set(eval = FALSE, echo = TRUE)
 
 * MMRM = mixed model for repeated measures.
 * Longitudinal data with continuous outcomes.
-* Bayesian version used in neuroscience and pulmonology.
+* Bayesian version used in clinical trials in neuroscience and pulmonology.
 
 :::
 
