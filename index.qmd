@@ -16,6 +16,10 @@ format:
 <h4>Will Landau</h4>
 </center>
 
+```{r, include = FALSE}
+knitr::opts_chunk$set(eval = FALSE, echo = TRUE)
+```
+
 ## Background
 
 <br>
@@ -104,6 +108,236 @@ $$
 
 * Repeat for thousands of independent draws of $\theta^{\text{sim}}$!
 * Check that the rank statistics $r$ are uniformly distributed.
+
+## Step 1: write functions
+
+::: {.nonincremental}
+
+> * Everything that exists in an object.
+> * Everything that happens is a function call.
+> 
+> John Chambers
+
+:::
+
+1. Idiomatic (natural expression of R)
+2. Clear
+    * Break down complicated ideas in to manageable pieces.
+    * Personal shorthand
+3. Reusable: define once, call from wherever.
+
+## Step 1: write functions
+
+```{r}
+run_simulation <- function(
+  scenario,
+  prior,
+  chains,
+  warmup,
+  iter
+) {
+  setup <- scenario()
+  data <- setup$data
+  formula <- setup$formula
+  simulation <- setup$simulate(data, formula, prior)
+  model <- brms.mmrm::brm_model(data, formula, prior, chains, "...")
+  get_sbc_ranks(model, simulation)
+}
+```
+
+* `run_simulation()` depends on `get_sbc_ranks()`, another user-defined function.
+
+## <span style="font-size:80%">Step 2: Define the pipeline in `_targets.R`</span>
+
+```{r}
+library(targets)
+library(tarchetypes)
+
+tar_option_set(
+  storage = "worker",
+  retrieval = "worker",
+  memory = "transient",
+  format = "qs",
+  garbage_collection = TRUE,
+  workspace_on_error = TRUE,
+  controller = crew.cluster::crew_controller_sge("...")
+)
+
+# ...
+```
+
+## <span style="font-size:80%">Step 2: Define the pipeline in `_targets.R`</span>
+
+```{r}
+# ...
+
+tar_source() # Loads functions from scripts in R/
+
+list(
+  tar_map(
+    values = scenarios,
+    tar_target(name = prior, command = setup_prior(scenario)),
+    tar_rep(
+      name = ranks,
+      command = run_simulation(scenario, prior),
+      batches = 1000,
+      reps = 1
+    ),
+
+# ...
+```
+
+## <span style="font-size:80%">Step 2: Define the pipeline in `_targets.R`</span>
+
+```{r}
+# ...
+
+    tar_target(
+      results,
+      save_fst(ranks, sprintf("results/%s.fst", name)),
+      deployment = "main"
+    )
+  )
+)
+```
+
+## Step 3: understand the pipeline
+
+```{r}
+tar_visnetwork()
+```
+
+![](./images/graph-full.png)
+
+
+## Step 3: understand the pipeline
+
+::: {.nonincremental}
+
+* Highlight subgraphs (e.g. neighbors of `run_simulation()`).
+
+:::
+
+![](./images/graph-highlight.png)
+
+## Step 3: understand the pipeline
+
+::: {.nonincremental}
+
+* Zoom in, click, drag, etc.
+
+:::
+
+![](./images/graph-zoom.png)
+
+## Step 3: understand the pipeline
+
+```{r}
+tar_outdated()
+#>  [1] "ranks_batch_compound_symmetry"            
+#>  [2] "ranks_moving_average"                     
+#>  [3] "ranks_diagonal"                           
+#>  [4] "results_diagonal"                         
+#>  [5] "prior_diagonal"                           
+#>  [6] "ranks_batch_autoregressive"               
+#>  [7] "results_moving_average"                   
+#>  [8] "prior_unstructured"                       
+#>  [9] "prior_compound_symmetry"                  
+#> [10] "results_subgroup"                         
+#> [11] "prior_autoregressive_moving_average"      
+#> [12] "results_compound_symmetry"                
+#> [13] "results_autoregressive_moving_average"    
+#> [14] "ranks_subgroup"                           
+#> [15] "ranks_compound_symmetry"                  
+#> [16] "prior_autoregressive"                     
+#> [17] "prior_moving_average"                     
+#> [18] "ranks_batch_diagonal"                     
+#> [19] "ranks_batch_subgroup"                     
+#> [20] "ranks_autoregressive"                     
+#> [21] "ranks_batch_moving_average"               
+#> [22] "ranks_batch_autoregressive_moving_average"
+#> [23] "results_unstructured"                     
+#> [24] "ranks_batch_unstructured"                 
+#> [25] "results_autoregressive"                   
+#> [26] "prior_subgroup"                           
+#> [27] "ranks_autoregressive_moving_average"      
+#> [28] "ranks_unstructured"                    
+```
+
+
+## Step 4: run the pipeline
+
+```{r}
+tar_make()
+#> ...
+#> ▶ dispatched target prior_subgroup
+#> ▶ dispatched target prior_moving_average
+#> ▶ dispatched target prior_diagonal
+#> ...
+#> ▶ dispatched branch ranks_moving_average_0622a4a0a1459592
+#> ▶ dispatched branch ranks_autoregressive_average_4d6e2b84dfce31bc
+#> ● completed branch ranks_unstructured_391a8253aae8fc3e [1.321 hours]
+#> ● completed branch ranks_unstructured_6fc2a563c4c2fecc [1.265 hours]
+#> ...
+```
+
+## Step 5: inspect results
+
+```{r}
+tar_read(ranks_unstructured)
+#> # A tibble: 1,000 × 19
+#>    b_groupgroup_1 b_groupgroup_2 b_groupgroup_3 b_timetime_2
+#>             <dbl>          <dbl>          <dbl>        <dbl>
+#>  1           4104           2573           3593         8346
+#>  2          11074          10962          10986         2911
+#>  3           9407          10515           9904         2703
+#>  4           6878             28            728         9672
+#>  5           3467           3365           3510        11599
+#>  6           6156           7975           6034         9547
+#>  7           6971           5843           1357        11736
+#>  8           1289            762           3830        10178
+#>  9           8738           6655          10501         2387
+#> 10           7985           7380           6802         6918
+#> # ℹ 990 more rows
+#> # ℹ 15 more variables...
+```
+
+## Step 5: inspect results
+
+![](./images/ranks.png)
+
+* Ranks are roughly uniform, model appears okay. 
+* <https://openpharma.github.io/brms.mmrm/articles/sbc.html>
+
+## Step 6: iterate as needed
+
+```{r}
+tar_make()
+#> ...
+#> ✔ skipped target prior_subgroup
+#> ▶ dispatched target unstructured
+#> ...
+#> ✔ skipped branch ranks_subgroup_42f1f9eb12129c61
+#> ▶ dispatched branch ranks_unstructured_a5f4994d5939727e
+#> ...
+```
+
+## Step 6: iterate as needed
+
+<br>
+
+```{r}
+tar_outdated()
+#> character(0)
+```
+
+<br>
+
+```{r}
+tar_make()
+#> ...
+#> ✔ skipped pipeline [1.23 minutes]
+```
 
 ## Recap
 
