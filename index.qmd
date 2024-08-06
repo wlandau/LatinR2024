@@ -24,53 +24,21 @@ format:
     * Bayesian methods
     * Iowa State University, 2011-2016
 * Career
-    * Tools for statisticians
+    * Tools for statisticians (such as [`targets`](https://docs.ropensci.org/targets))
     * Eli Lilly and Company, 2016-present
 
-## Scary problems in Statistics...
-
-::: {style="font-size:75%"}
-
-* ...have solutions in software engineering:
-
-:::
-
-## Scary problems in Statistics...
-
-::: {.nonincremental style="font-size:75%"}
-
-* ...have solutions in software engineering:
-
-:::
+## <span style="font-size:60%">Scary problems doing stats have non-stats solutions.</span>
 
 ![](./images/github.png)
 
-## Scary problems in Statistics...
-
-::: {.nonincremental style="font-size:75%"}
-
-* ...have solutions in software engineering:
-
-:::
+## <span style="font-size:60%">Scary problems doing stats have non-stats solutions.</span>
 
 ![](./images/renv.png)
 
-## Scary problems in Statistics...
-
-::: {.nonincremental style="font-size:75%"}
-
-* ...have solutions in software engineering:
-
-:::
+## <span style="font-size:60%">Scary problems doing stats have non-stats solutions.</span>
 
 ![](./images/quarto.png)
 
-## Scary problems in Statistics...
-
-::: {.nonincremental style="font-size:75%"}
-
-* ...have solutions in software engineering:
-
-:::
+## <span style="font-size:60%">Scary problems doing stats have non-stats solutions.</span>
 
 ![](./images/targets-problem-solution.png)
