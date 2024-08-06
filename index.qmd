@@ -42,3 +42,18 @@ format:
 ## <span style="font-size:60%">Scary problems doing stats have non-stats solutions.</span>
 
 ![](./images/targets-problem-solution.png)
+
+## Example: Bayesian model validation
+
+## Example: clinical trial simulation
+
+## Recap
+
+* 
+
+## Thanks!
+
+<center>
+<img src="./images/link.svg" width=400> <br>
+<https://wlandau.github.io/LatinR2024>
+</center>
