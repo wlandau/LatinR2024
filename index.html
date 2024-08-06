@@ -368,7 +368,76 @@ Will Landau
 <section id="scary-problems-doing-stats-have-non-stats-solutions.-3" class="slide level2">
 <h2><span style="font-size:60%">Scary problems doing stats have non-stats solutions.</span></h2>
 
-<img data-src="./images/targets-problem-solution.png" class="r-stretch"><div class="footer footer-default">
+<img data-src="./images/targets-problem-solution.png" class="r-stretch"></section>
+<section id="example-bayesian-model-validation" class="slide level2" data-background-color="skyblue">
+<h2>Example: Bayesian model validation</h2>
+</section>
+<section id="bayesian-mmrm" class="slide level2">
+<h2>Bayesian MMRM</h2>
+
+<img data-src="./images/fev.png" class="r-stretch"><div style="font-size: 75%">
+<ul>
+<li class="fragment">MMRM = mixed model for repeated measures.</li>
+<li class="fragment">Longitudinal data with continuous outcomes.</li>
+<li class="fragment">Bayesian version used in neuroscience and pulmonology.</li>
+</ul>
+</div>
+</section>
+<section id="implementation" class="slide level2">
+<h2>Implementation</h2>
+
+<img data-src="./images/brms.mmrm.png" class="r-stretch"></section>
+<section id="computational-demands-of-stan" class="slide level2">
+<h2>Computational demands of Stan</h2>
+
+<img data-src="./images/hmc.png" class="r-stretch"><div style="font-size: 75%">
+<ul>
+<li class="fragment">Stan uses Hamiltonian Monte Carlo (HMC) to draw from the posterior distribution.</li>
+<li class="fragment">Based on a physics simulation of a marble rolling around in a smooth bowl.</li>
+</ul>
+</div>
+</section>
+<section id="computational-demands-of-stan-1" class="slide level2">
+<h2>Computational demands of Stan</h2>
+
+<img data-src="./images/hmc.png" class="r-stretch"><div style="font-size: 75%">
+<ul>
+<li class="fragment">Bowl is moderately high-dimensional for MMRMs.</li>
+<li class="fragment">Could take several minutes or hours to fit a single model!</li>
+</ul>
+</div>
+</section>
+<section id="validate-brms.mmrm-with-sbc" class="slide level2 smaller">
+<h2>Validate {brms.mmrm} with SBC</h2>
+<div>
+<ul>
+<li>Simulation-based calibration (SBC) checking:</li>
+</ul>
+</div>
+<p><br></p>
+<p><span class="math display">\[
+\begin{aligned}
+\theta^{\text{sim}} &amp;\sim p(\theta) \qquad &amp;&amp;\text{Draw parameters from the prior.} \\
+y^{\text{sim}} &amp;\sim p(y | \theta^{\text{sim}}) \qquad &amp;&amp;\text{Draw data given parameters.} \\
+\theta^{(1)}, \ldots, \theta^{(M)} &amp;\sim p(\theta | y^{\text{sim}})  \qquad &amp;&amp;\text{Draw HMC samples from the posterior} \\
+r &amp;= \sum_{m = 1}^M I \left [ \theta^{(m)} &lt; \theta^{\text{sim}} \right ] &amp;&amp; \text{Count number of HMC samples} &lt; \theta^{\text{sim}}
+\end{aligned}
+\]</span></p>
+<p><br></p>
+<ul>
+<li class="fragment">Repeat for thousands of independent draws of <span class="math inline">\(\theta^{\text{sim}}\)</span>!</li>
+<li class="fragment">Check that the rank statistics <span class="math inline">\(r\)</span> are uniformly distributed.</li>
+</ul>
+</section>
+<section id="recap" class="slide level2">
+<h2>Recap</h2>
+</section>
+<section id="thanks" class="slide level2">
+<h2>Thanks!</h2>
+<center>
+<img src="./images/link.svg" width="400"> <br> <a href="https://wlandau.github.io/LatinR2024" class="uri">https://wlandau.github.io/LatinR2024</a>
+</center>
+<div class="footer footer-default">
 <p>© Eli Lilly and Company</p>
 </div>
 </section>

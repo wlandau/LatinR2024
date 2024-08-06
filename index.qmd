@@ -43,13 +43,71 @@ format:
 
 ![](./images/targets-problem-solution.png)
 
-## Example: Bayesian model validation
+## Example: Bayesian model validation {data-background-color=skyblue}
 
-## Example: clinical trial simulation
+## Bayesian MMRM
+
+![](./images/fev.png)
+
+::: {style="font-size: 75%"}
+
+* MMRM = mixed model for repeated measures.
+* Longitudinal data with continuous outcomes.
+* Bayesian version used in neuroscience and pulmonology.
+
+:::
+
+## Implementation
+
+![](./images/brms.mmrm.png)
+
+## Computational demands of Stan
+
+![](./images/hmc.png)
+
+::: {style="font-size: 75%"}
+
+* Stan uses Hamiltonian Monte Carlo (HMC) to draw from the posterior distribution.
+* Based on a physics simulation of a marble rolling around in a smooth bowl.
+:::
+
+## Computational demands of Stan
+
+![](./images/hmc.png)
+
+::: {style="font-size: 75%"}
+
+* Bowl is moderately high-dimensional for MMRMs.
+* Could take several minutes or hours to fit a single model!
+:::
+
+## Validate {brms.mmrm} with SBC {.smaller}
+
+::: {.nonincremental}
+
+* Simulation-based calibration (SBC) checking:
+
+:::
+
+<br>
+
+$$
+\begin{aligned}
+\theta^{\text{sim}} &\sim p(\theta) \qquad &&\text{Draw parameters from the prior.} \\
+y^{\text{sim}} &\sim p(y | \theta^{\text{sim}}) \qquad &&\text{Draw data given parameters.} \\
+\theta^{(1)}, \ldots, \theta^{(M)} &\sim p(\theta | y^{\text{sim}})  \qquad &&\text{Draw HMC samples from the posterior} \\
+r &= \sum_{m = 1}^M I \left [ \theta^{(m)} < \theta^{\text{sim}} \right ] && \text{Count number of HMC samples} < \theta^{\text{sim}}
+\end{aligned}
+$$
+
+<br>
+
+* Repeat for thousands of independent draws of $\theta^{\text{sim}}$!
+* Check that the rank statistics $r$ are uniformly distributed.
 
 ## Recap
 
-* 
+
 
 ## Thanks!
 
