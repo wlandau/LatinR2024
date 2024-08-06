@@ -3,33 +3,74 @@ format:
    revealjs:
      slide-number: true
      incremental: true
-     footer: "&copy Eli Lilly and Company"
+     footer: "&copy; Eli Lilly and Company"
      view-distance: 100
      mobile-view-distance: 100
 ---
 
-<style>
-.reveal .tiny {
-  display: inline-block;
-  font-size: 0.5em;
-  line-height: 1.0em;
-  vertical-align: top;
-}
-.reveal .medium {
-  display: inline-block;
-  font-size: 0.75em;
-  line-height: 1.5em;
-  vertical-align: top;
-}
-</style>
-
 <center>
 <br>
 <h3>Friendly solutions to scary problems</h3>
-<img src="./images/targets.png" height="600px">
+<img src="./images/targets.png" height="400px">
 <br>
 <h4>Will Landau</h4>
 </center>
 
+## Background
 
+<br>
 
+* Training
+    * Bayesian methods
+    * Iowa State University, 2011-2016
+* Career
+    * Tools for statisticians
+    * Eli Lilly and Company, 2016-present
+
+## Scary problems in Statistics...
+
+::: {style="font-size:75%"}
+
+* ...have solutions in software engineering:
+
+:::
+
+## Scary problems in Statistics...
+
+::: {.nonincremental style="font-size:75%"}
+
+* ...have solutions in software engineering:
+
+:::
+
+![](./images/github.png)
+
+## Scary problems in Statistics...
+
+::: {.nonincremental style="font-size:75%"}
+
+* ...have solutions in software engineering:
+
+:::
+
+![](./images/renv.png)
+
+## Scary problems in Statistics...
+
+::: {.nonincremental style="font-size:75%"}
+
+* ...have solutions in software engineering:
+
+:::
+
+![](./images/quarto.png)
+
+## Scary problems in Statistics...
+
+::: {.nonincremental style="font-size:75%"}
+
+* ...have solutions in software engineering:
+
+:::
+
+![](./images/targets-problem-solution.png)
