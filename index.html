@@ -839,6 +839,7 @@ r &amp;= \sum_{m = 1}^M I \left [ \theta^{(m)} &lt; \theta^{\text{sim}} \right ]
 </section>
 <section id="configuring-crew-in-_targets.r" class="slide level2">
 <h2>Configuring <code>crew</code> in <code>_targets.R</code></h2>
+<p><br></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">tar_option_set</span>(</span>
 <span id="cb17-2"><a href="#cb17-2"></a>  <span class="at">controller =</span> crew.cluster<span class="sc">::</span><span class="fu">crew_controller_slurm</span>(</span>
@@ -848,6 +849,7 @@ r &amp;= \sum_{m = 1}^M I \left [ \theta^{(m)} &lt; \theta^{\text{sim}} \right ]
 <span id="cb17-6"><a href="#cb17-6"></a>  )</span>
 <span id="cb17-7"><a href="#cb17-7"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p><br></p>
 <ul>
 <li class="fragment"><code>workers</code>, <code>seconds_idle</code>, and <code>tasks_max</code> control <strong>auto-scaling</strong>.</li>
 </ul>
