@@ -47,6 +47,221 @@ knitr::opts_chunk$set(eval = FALSE, echo = TRUE)
 
 ![](./images/targets-problem-solution.png)
 
+## Repetition: the overlooked bane of long computation
+
+<br>
+
+![](./images/reality.png)
+
+
+## Workflows have interconnected steps.
+
+![](./images/workflow.png)
+
+
+## If you change code or data...
+
+![](./images/change.png)
+
+
+## ...the downstream steps are no longer valid.
+
+![](./images/downstream.png)
+
+## Dilemma: short runtimes or reproducible results?
+
+![](./images/decisions.png)
+
+
+## Let a pipeline tool figure out what to rerun.
+
+![](./images/pipeline_graph.png)
+
+* Save time while ensuring computational reproducibility.
+* Automatic parallel/distributed computing based on the directed acyclic graph.
+
+## Pipeline tools
+
+<center>
+<img src="./images/infographic.png" height = "300px">
+</center>
+
+::: {style="font-size:80%"}
+
+* Existing pipeline tools: <https://github.com/pditommaso/awesome-pipeline>
+* Most are language-agnostic or designed for Python or the shell.
+
+:::
+
+## `targets`
+
+<center>
+<img src="./images/targets.png" height="300">
+</center>
+
+* Fundamentally designed for R.
+* Supports a clean, modular, function-oriented programming style.
+* Abstracts files as R objects and automatically manages data.
+
+
+## <span style="font-size:80%">What is a pipeline?
+
+<center>
+<img src="./images/pipeline-def.png" height="200">
+</center>
+
+* A collection of computational steps.
+* Each step can depend on previous steps.
+* Run upstream dependencies before downstream steps.
+* Skip steps whose code and dependencies did not change.
+
+
+
+## Simple example: air quality data analysis {data-background-color=skyblue}
+
+
+
+## Simple analysis of air quality data
+
+<br>
+
+::: {style="font-size:125%"}
+
+```{r}
+library(dplyr)
+library(ggplot2)
+library(readr)
+
+data <- read_csv("data.csv", col_types = cols()) %>%
+  filter(!is.na(Ozone))
+
+# ...
+```
+
+:::
+
+## Simple analysis of air quality data
+
+<br>
+
+::: {style="font-size:125%"}
+
+```{r}
+
+# ...
+model <- lm(Ozone ~ Temp, data = data) %>%
+  coef()
+
+plot <- ggplot(data) +
+  geom_point(aes(x = Temp, y = Ozone)) +
+  geom_abline(intercept = model[1], slope = model[2]) +
+  theme_gray(24)
+```
+
+:::
+
+## Simple analysis of air quality data
+
+```{r}
+plot
+```
+
+![](./images/airquality)
+
+
+## Step 1: write functions
+
+::: {.nonincremental}
+
+> * Everything that exists in an object.
+> * Everything that happens is a function call.
+> 
+> John Chambers
+
+:::
+
+1. Idiomatic (natural expression of R)
+2. Clear
+    * Break down complicated ideas in to manageable pieces.
+    * Personal shorthand
+3. Reusable: define once, call from wherever.
+
+## Step 1: Write functions
+
+::: {style="font-size:150%"}
+
+```{r}
+# R/functions.R
+process_data <- function(file) {
+  read_csv(file, col_types = cols()) %>%
+    filter(!is.na(Ozone))
+}
+
+fit_model <- function(data) {
+  lm(Ozone ~ Temp, data = data) %>%
+    coef()
+}
+# ...
+```
+
+:::
+
+## Step 1: Write functions
+
+::: {style="font-size:150%"}
+
+```{r}
+# ...
+plot_results <- function(data, model) {
+  ggplot(data) +
+    geom_point(aes(x = Temp, y = Ozone)) +
+    geom_abline(
+      intercept = model[1],
+      slope = model[2]
+    ) +
+    theme_gray(24)
+}
+```
+
+:::
+
+## <span style="font-size:80%">Step 2: Define the pipeline in `_targets.R`</span>
+
+::: {style="font-size:150%"}
+
+```{r}
+library(targets)
+tar_option_set(
+  packages = c("dplyr", "ggplot2", "readr")
+)
+tar_source()
+list(
+  tar_target(file, "data.csv", format = "file"),
+  tar_target(data, process_data(file)),
+  tar_target(model, fit_model(data)),
+  tar_target(plot, plot_results(model, data))
+)
+```
+
+:::
+
+::: {style="font-size:80%"}
+
+* `use_targets()` generates a template `_targets.R` file.
+* Call `tar_edit()` to edit `_targets.R`.
+
+:::
+
+## Step 3: understand the pipeline
+
+```{r}
+tar_visnetwork()
+```
+
+![](./images/airgraph1.png)
+
+
+
 ## Scary example: Bayesian model validation {data-background-color=skyblue}
 
 ## Bayesian MMRM
@@ -136,23 +351,6 @@ $$
 * Need distributed computing to run models in parallel.
 
 :::
-
-## Step 1: write functions
-
-::: {.nonincremental}
-
-> * Everything that exists in an object.
-> * Everything that happens is a function call.
-> 
-> John Chambers
-
-:::
-
-1. Idiomatic (natural expression of R)
-2. Clear
-    * Break down complicated ideas in to manageable pieces.
-    * Personal shorthand
-3. Reusable: define once, call from wherever.
 
 ## Step 1: write functions
 

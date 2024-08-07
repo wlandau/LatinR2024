@@ -434,6 +434,199 @@ Will Landau
 <h2><span style="font-size:70%">Scary problems with non-statistical solutions</span></h2>
 
 <img data-src="./images/targets-problem-solution.png" class="r-stretch"></section>
+<section id="repetition-the-overlooked-bane-of-long-computation" class="slide level2">
+<h2>Repetition: the overlooked bane of long computation</h2>
+<p><br></p>
+
+<img data-src="./images/reality.png" class="r-stretch"></section>
+<section id="workflows-have-interconnected-steps." class="slide level2">
+<h2>Workflows have interconnected steps.</h2>
+
+<img data-src="./images/workflow.png" class="r-stretch"></section>
+<section id="if-you-change-code-or-data" class="slide level2">
+<h2>If you change code or data…</h2>
+
+<img data-src="./images/change.png" class="r-stretch"></section>
+<section id="the-downstream-steps-are-no-longer-valid." class="slide level2">
+<h2>…the downstream steps are no longer valid.</h2>
+
+<img data-src="./images/downstream.png" class="r-stretch"></section>
+<section id="dilemma-short-runtimes-or-reproducible-results" class="slide level2">
+<h2>Dilemma: short runtimes or reproducible results?</h2>
+
+<img data-src="./images/decisions.png" class="r-stretch"></section>
+<section id="let-a-pipeline-tool-figure-out-what-to-rerun." class="slide level2">
+<h2>Let a pipeline tool figure out what to rerun.</h2>
+
+<img data-src="./images/pipeline_graph.png" class="r-stretch"><ul>
+<li class="fragment">Save time while ensuring computational reproducibility.</li>
+<li class="fragment">Automatic parallel/distributed computing based on the directed acyclic graph.</li>
+</ul>
+</section>
+<section id="pipeline-tools" class="slide level2">
+<h2>Pipeline tools</h2>
+<center>
+<img src="./images/infographic.png" height="300px">
+</center>
+<div style="font-size:80%">
+<ul>
+<li class="fragment">Existing pipeline tools: <a href="https://github.com/pditommaso/awesome-pipeline" class="uri">https://github.com/pditommaso/awesome-pipeline</a></li>
+<li class="fragment">Most are language-agnostic or designed for Python or the shell.</li>
+</ul>
+</div>
+</section>
+<section id="targets" class="slide level2">
+<h2><code>targets</code></h2>
+<center>
+<img src="./images/targets.png" height="300">
+</center>
+<ul>
+<li class="fragment">Fundamentally designed for R.</li>
+<li class="fragment">Supports a clean, modular, function-oriented programming style.</li>
+<li class="fragment">Abstracts files as R objects and automatically manages data.</li>
+</ul>
+</section>
+<section id="what-is-a-pipeline" class="slide level2">
+<h2><span style="font-size:80%">What is a pipeline?</span></h2>
+<center>
+<img src="./images/pipeline-def.png" height="200">
+</center>
+<ul>
+<li class="fragment">A collection of computational steps.</li>
+<li class="fragment">Each step can depend on previous steps.</li>
+<li class="fragment">Run upstream dependencies before downstream steps.</li>
+<li class="fragment">Skip steps whose code and dependencies did not change.</li>
+</ul>
+</section>
+<section id="simple-example-air-quality-data-analysis" class="slide level2" data-background-color="skyblue">
+<h2>Simple example: air quality data analysis</h2>
+</section>
+<section id="simple-analysis-of-air-quality-data" class="slide level2">
+<h2>Simple analysis of air quality data</h2>
+<p><br></p>
+<div style="font-size:125%">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">library</span>(readr)</span>
+<span id="cb1-4"><a href="#cb1-4"></a></span>
+<span id="cb1-5"><a href="#cb1-5"></a>data <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data.csv"</span>, <span class="at">col_types =</span> <span class="fu">cols</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Ozone))</span>
+<span id="cb1-7"><a href="#cb1-7"></a></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="simple-analysis-of-air-quality-data-1" class="slide level2">
+<h2>Simple analysis of air quality data</h2>
+<p><br></p>
+<div style="font-size:125%">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># ...</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(Ozone <span class="sc">~</span> Temp, <span class="at">data =</span> data) <span class="sc">%&gt;%</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a>  <span class="fu">coef</span>()</span>
+<span id="cb2-4"><a href="#cb2-4"></a></span>
+<span id="cb2-5"><a href="#cb2-5"></a>plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(data) <span class="sc">+</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> Temp, <span class="at">y =</span> Ozone)) <span class="sc">+</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>  <span class="fu">geom_abline</span>(<span class="at">intercept =</span> model[<span class="dv">1</span>], <span class="at">slope =</span> model[<span class="dv">2</span>]) <span class="sc">+</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>  <span class="fu">theme_gray</span>(<span class="dv">24</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="simple-analysis-of-air-quality-data-2" class="slide level2">
+<h2>Simple analysis of air quality data</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+<img data-src="./images/airquality.png" class="r-stretch"></section>
+<section id="step-1-write-functions" class="slide level2">
+<h2>Step 1: write functions</h2>
+<div>
+<blockquote>
+<ul>
+<li>Everything that exists in an object.</li>
+<li>Everything that happens is a function call.</li>
+</ul>
+<p>John Chambers</p>
+</blockquote>
+</div>
+<ol type="1">
+<li class="fragment">Idiomatic (natural expression of R)</li>
+<li class="fragment">Clear
+<ul>
+<li class="fragment">Break down complicated ideas in to manageable pieces.</li>
+<li class="fragment">Personal shorthand</li>
+</ul></li>
+<li class="fragment">Reusable: define once, call from wherever.</li>
+</ol>
+</section>
+<section id="step-1-write-functions-1" class="slide level2">
+<h2>Step 1: Write functions</h2>
+<div style="font-size:150%">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># R/functions.R</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>process_data <span class="ot">&lt;-</span> <span class="cf">function</span>(file) {</span>
+<span id="cb4-3"><a href="#cb4-3"></a>  <span class="fu">read_csv</span>(file, <span class="at">col_types =</span> <span class="fu">cols</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>    <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Ozone))</span>
+<span id="cb4-5"><a href="#cb4-5"></a>}</span>
+<span id="cb4-6"><a href="#cb4-6"></a></span>
+<span id="cb4-7"><a href="#cb4-7"></a>fit_model <span class="ot">&lt;-</span> <span class="cf">function</span>(data) {</span>
+<span id="cb4-8"><a href="#cb4-8"></a>  <span class="fu">lm</span>(Ozone <span class="sc">~</span> Temp, <span class="at">data =</span> data) <span class="sc">%&gt;%</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a>    <span class="fu">coef</span>()</span>
+<span id="cb4-10"><a href="#cb4-10"></a>}</span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="step-1-write-functions-2" class="slide level2">
+<h2>Step 1: Write functions</h2>
+<div style="font-size:150%">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># ...</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>plot_results <span class="ot">&lt;-</span> <span class="cf">function</span>(data, model) {</span>
+<span id="cb5-3"><a href="#cb5-3"></a>  <span class="fu">ggplot</span>(data) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> Temp, <span class="at">y =</span> Ozone)) <span class="sc">+</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>    <span class="fu">geom_abline</span>(</span>
+<span id="cb5-6"><a href="#cb5-6"></a>      <span class="at">intercept =</span> model[<span class="dv">1</span>],</span>
+<span id="cb5-7"><a href="#cb5-7"></a>      <span class="at">slope =</span> model[<span class="dv">2</span>]</span>
+<span id="cb5-8"><a href="#cb5-8"></a>    ) <span class="sc">+</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a>    <span class="fu">theme_gray</span>(<span class="dv">24</span>)</span>
+<span id="cb5-10"><a href="#cb5-10"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</section>
+<section id="step-2-define-the-pipeline-in-_targets.r" class="slide level2">
+<h2><span style="font-size:80%">Step 2: Define the pipeline in <code>_targets.R</code></span></h2>
+<div style="font-size:150%">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">library</span>(targets)</span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="fu">tar_option_set</span>(</span>
+<span id="cb6-3"><a href="#cb6-3"></a>  <span class="at">packages =</span> <span class="fu">c</span>(<span class="st">"dplyr"</span>, <span class="st">"ggplot2"</span>, <span class="st">"readr"</span>)</span>
+<span id="cb6-4"><a href="#cb6-4"></a>)</span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="fu">tar_source</span>()</span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="fu">list</span>(</span>
+<span id="cb6-7"><a href="#cb6-7"></a>  <span class="fu">tar_target</span>(file, <span class="st">"data.csv"</span>, <span class="at">format =</span> <span class="st">"file"</span>),</span>
+<span id="cb6-8"><a href="#cb6-8"></a>  <span class="fu">tar_target</span>(data, <span class="fu">process_data</span>(file)),</span>
+<span id="cb6-9"><a href="#cb6-9"></a>  <span class="fu">tar_target</span>(model, <span class="fu">fit_model</span>(data)),</span>
+<span id="cb6-10"><a href="#cb6-10"></a>  <span class="fu">tar_target</span>(plot, <span class="fu">plot_results</span>(model, data))</span>
+<span id="cb6-11"><a href="#cb6-11"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div style="font-size:80%">
+<ul>
+<li class="fragment"><code>use_targets()</code> generates a template <code>_targets.R</code> file.</li>
+<li class="fragment">Call <code>tar_edit()</code> to edit <code>_targets.R</code>.</li>
+</ul>
+</div>
+</section>
+<section id="step-3-understand-the-pipeline" class="slide level2">
+<h2>Step 3: understand the pipeline</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">tar_visnetwork</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+<img data-src="./images/airgraph1.png" class="r-stretch"></section>
 <section id="scary-example-bayesian-model-validation" class="slide level2" data-background-color="skyblue">
 <h2>Scary example: Bayesian model validation</h2>
 </section>
@@ -514,145 +707,124 @@ r &amp;= \sum_{m = 1}^M I \left [ \theta^{(m)} &lt; \theta^{\text{sim}} \right ]
 </ul>
 </div>
 </section>
-<section id="step-1-write-functions" class="slide level2">
-<h2>Step 1: write functions</h2>
-<div>
-<blockquote>
-<ul>
-<li>Everything that exists in an object.</li>
-<li>Everything that happens is a function call.</li>
-</ul>
-<p>John Chambers</p>
-</blockquote>
-</div>
-<ol type="1">
-<li class="fragment">Idiomatic (natural expression of R)</li>
-<li class="fragment">Clear
-<ul>
-<li class="fragment">Break down complicated ideas in to manageable pieces.</li>
-<li class="fragment">Personal shorthand</li>
-</ul></li>
-<li class="fragment">Reusable: define once, call from wherever.</li>
-</ol>
-</section>
-<section id="step-1-write-functions-1" class="slide level2">
+<section id="step-1-write-functions-3" class="slide level2">
 <h2>Step 1: write functions</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>run_simulation <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
-<span id="cb1-2"><a href="#cb1-2"></a>  scenario,</span>
-<span id="cb1-3"><a href="#cb1-3"></a>  prior,</span>
-<span id="cb1-4"><a href="#cb1-4"></a>  chains,</span>
-<span id="cb1-5"><a href="#cb1-5"></a>  warmup,</span>
-<span id="cb1-6"><a href="#cb1-6"></a>  iter</span>
-<span id="cb1-7"><a href="#cb1-7"></a>) {</span>
-<span id="cb1-8"><a href="#cb1-8"></a>  setup <span class="ot">&lt;-</span> <span class="fu">scenario</span>()</span>
-<span id="cb1-9"><a href="#cb1-9"></a>  data <span class="ot">&lt;-</span> setup<span class="sc">$</span>data</span>
-<span id="cb1-10"><a href="#cb1-10"></a>  formula <span class="ot">&lt;-</span> setup<span class="sc">$</span>formula</span>
-<span id="cb1-11"><a href="#cb1-11"></a>  simulation <span class="ot">&lt;-</span> setup<span class="sc">$</span><span class="fu">simulate</span>(data, formula, prior)</span>
-<span id="cb1-12"><a href="#cb1-12"></a>  model <span class="ot">&lt;-</span> brms.mmrm<span class="sc">::</span><span class="fu">brm_model</span>(data, formula, prior, chains, <span class="st">"..."</span>)</span>
-<span id="cb1-13"><a href="#cb1-13"></a>  <span class="fu">get_sbc_ranks</span>(model, simulation)</span>
-<span id="cb1-14"><a href="#cb1-14"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>run_simulation <span class="ot">&lt;-</span> <span class="cf">function</span>(</span>
+<span id="cb8-2"><a href="#cb8-2"></a>  scenario,</span>
+<span id="cb8-3"><a href="#cb8-3"></a>  prior,</span>
+<span id="cb8-4"><a href="#cb8-4"></a>  chains,</span>
+<span id="cb8-5"><a href="#cb8-5"></a>  warmup,</span>
+<span id="cb8-6"><a href="#cb8-6"></a>  iter</span>
+<span id="cb8-7"><a href="#cb8-7"></a>) {</span>
+<span id="cb8-8"><a href="#cb8-8"></a>  setup <span class="ot">&lt;-</span> <span class="fu">scenario</span>()</span>
+<span id="cb8-9"><a href="#cb8-9"></a>  data <span class="ot">&lt;-</span> setup<span class="sc">$</span>data</span>
+<span id="cb8-10"><a href="#cb8-10"></a>  formula <span class="ot">&lt;-</span> setup<span class="sc">$</span>formula</span>
+<span id="cb8-11"><a href="#cb8-11"></a>  simulation <span class="ot">&lt;-</span> setup<span class="sc">$</span><span class="fu">simulate</span>(data, formula, prior)</span>
+<span id="cb8-12"><a href="#cb8-12"></a>  model <span class="ot">&lt;-</span> brms.mmrm<span class="sc">::</span><span class="fu">brm_model</span>(data, formula, prior, chains, <span class="st">"..."</span>)</span>
+<span id="cb8-13"><a href="#cb8-13"></a>  <span class="fu">get_sbc_ranks</span>(model, simulation)</span>
+<span id="cb8-14"><a href="#cb8-14"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li class="fragment"><code>run_simulation()</code> depends on <code>get_sbc_ranks()</code>, another user-defined function.</li>
 </ul>
 </section>
-<section id="step-2-define-the-pipeline-in-_targets.r" class="slide level2">
-<h2><span style="font-size:80%">Step 2: Define the pipeline in <code>_targets.R</code></span></h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="fu">library</span>(targets)</span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="fu">library</span>(tarchetypes)</span>
-<span id="cb2-3"><a href="#cb2-3"></a></span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="fu">tar_option_set</span>(</span>
-<span id="cb2-5"><a href="#cb2-5"></a>  <span class="at">storage =</span> <span class="st">"worker"</span>,</span>
-<span id="cb2-6"><a href="#cb2-6"></a>  <span class="at">retrieval =</span> <span class="st">"worker"</span>,</span>
-<span id="cb2-7"><a href="#cb2-7"></a>  <span class="at">memory =</span> <span class="st">"transient"</span>,</span>
-<span id="cb2-8"><a href="#cb2-8"></a>  <span class="at">format =</span> <span class="st">"qs"</span>,</span>
-<span id="cb2-9"><a href="#cb2-9"></a>  <span class="at">garbage_collection =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb2-10"><a href="#cb2-10"></a>  <span class="at">workspace_on_error =</span> <span class="cn">TRUE</span></span>
-<span id="cb2-11"><a href="#cb2-11"></a>)</span>
-<span id="cb2-12"><a href="#cb2-12"></a></span>
-<span id="cb2-13"><a href="#cb2-13"></a><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
 <section id="step-2-define-the-pipeline-in-_targets.r-1" class="slide level2">
 <h2><span style="font-size:80%">Step 2: Define the pipeline in <code>_targets.R</code></span></h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">library</span>(targets)</span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="fu">library</span>(tarchetypes)</span>
-<span id="cb3-3"><a href="#cb3-3"></a></span>
-<span id="cb3-4"><a href="#cb3-4"></a><span class="fu">tar_option_set</span>(</span>
-<span id="cb3-5"><a href="#cb3-5"></a>  <span class="at">controller =</span> crew.cluster<span class="sc">::</span><span class="fu">crew_controller_slurm</span>(</span>
-<span id="cb3-6"><a href="#cb3-6"></a>    <span class="at">workers =</span> <span class="dv">50</span>,</span>
-<span id="cb3-7"><a href="#cb3-7"></a>    <span class="at">seconds_idle =</span> <span class="dv">120</span>,</span>
-<span id="cb3-8"><a href="#cb3-8"></a>    <span class="at">tasks_max =</span> <span class="dv">3</span>,</span>
-<span id="cb3-9"><a href="#cb3-9"></a>    <span class="at">script_lines =</span> <span class="st">"module load R"</span>,</span>
-<span id="cb3-10"><a href="#cb3-10"></a>    <span class="at">slurm_memory_gigabytes_required =</span> <span class="dv">4</span></span>
-<span id="cb3-11"><a href="#cb3-11"></a>  )</span>
-<span id="cb3-12"><a href="#cb3-12"></a>)</span>
-<span id="cb3-13"><a href="#cb3-13"></a></span>
-<span id="cb3-14"><a href="#cb3-14"></a><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">library</span>(targets)</span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="fu">library</span>(tarchetypes)</span>
+<span id="cb9-3"><a href="#cb9-3"></a></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="fu">tar_option_set</span>(</span>
+<span id="cb9-5"><a href="#cb9-5"></a>  <span class="at">storage =</span> <span class="st">"worker"</span>,</span>
+<span id="cb9-6"><a href="#cb9-6"></a>  <span class="at">retrieval =</span> <span class="st">"worker"</span>,</span>
+<span id="cb9-7"><a href="#cb9-7"></a>  <span class="at">memory =</span> <span class="st">"transient"</span>,</span>
+<span id="cb9-8"><a href="#cb9-8"></a>  <span class="at">format =</span> <span class="st">"qs"</span>,</span>
+<span id="cb9-9"><a href="#cb9-9"></a>  <span class="at">garbage_collection =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb9-10"><a href="#cb9-10"></a>  <span class="at">workspace_on_error =</span> <span class="cn">TRUE</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a>)</span>
+<span id="cb9-12"><a href="#cb9-12"></a></span>
+<span id="cb9-13"><a href="#cb9-13"></a><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="step-2-define-the-pipeline-in-_targets.r-2" class="slide level2">
+<h2><span style="font-size:80%">Step 2: Define the pipeline in <code>_targets.R</code></span></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">library</span>(targets)</span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="fu">library</span>(tarchetypes)</span>
+<span id="cb10-3"><a href="#cb10-3"></a></span>
+<span id="cb10-4"><a href="#cb10-4"></a><span class="fu">tar_option_set</span>(</span>
+<span id="cb10-5"><a href="#cb10-5"></a>  <span class="at">controller =</span> crew.cluster<span class="sc">::</span><span class="fu">crew_controller_slurm</span>(</span>
+<span id="cb10-6"><a href="#cb10-6"></a>    <span class="at">workers =</span> <span class="dv">50</span>,</span>
+<span id="cb10-7"><a href="#cb10-7"></a>    <span class="at">seconds_idle =</span> <span class="dv">120</span>,</span>
+<span id="cb10-8"><a href="#cb10-8"></a>    <span class="at">tasks_max =</span> <span class="dv">3</span>,</span>
+<span id="cb10-9"><a href="#cb10-9"></a>    <span class="at">script_lines =</span> <span class="st">"module load R"</span>,</span>
+<span id="cb10-10"><a href="#cb10-10"></a>    <span class="at">slurm_memory_gigabytes_required =</span> <span class="dv">4</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a>  )</span>
+<span id="cb10-12"><a href="#cb10-12"></a>)</span>
+<span id="cb10-13"><a href="#cb10-13"></a></span>
+<span id="cb10-14"><a href="#cb10-14"></a><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ul>
 <li class="fragment">Distributed computing is powered by packages <a href="https://wlandau.github.io/crew"><code>crew</code></a> and <a href="https://github.com/shikokuchuo/mirai"><code>mirai</code></a>.</li>
 <li class="fragment"><a href="https://books.ropensci.org/targets/crew.html" class="uri">https://books.ropensci.org/targets/crew.html</a></li>
 </ul>
 </section>
-<section id="step-2-define-the-pipeline-in-_targets.r-2" class="slide level2">
-<h2><span style="font-size:80%">Step 2: Define the pipeline in <code>_targets.R</code></span></h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># ...</span></span>
-<span id="cb4-2"><a href="#cb4-2"></a></span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="fu">tar_source</span>() <span class="co"># Loads functions from scripts in R/</span></span>
-<span id="cb4-4"><a href="#cb4-4"></a></span>
-<span id="cb4-5"><a href="#cb4-5"></a><span class="fu">list</span>(</span>
-<span id="cb4-6"><a href="#cb4-6"></a>  <span class="fu">tar_map</span>(</span>
-<span id="cb4-7"><a href="#cb4-7"></a>    <span class="at">values =</span> scenarios,</span>
-<span id="cb4-8"><a href="#cb4-8"></a>    <span class="fu">tar_target</span>(<span class="at">name =</span> prior, <span class="at">command =</span> <span class="fu">setup_prior</span>(scenario)),</span>
-<span id="cb4-9"><a href="#cb4-9"></a>    <span class="fu">tar_rep</span>(</span>
-<span id="cb4-10"><a href="#cb4-10"></a>      <span class="at">name =</span> ranks,</span>
-<span id="cb4-11"><a href="#cb4-11"></a>      <span class="at">command =</span> <span class="fu">run_simulation</span>(scenario, prior),</span>
-<span id="cb4-12"><a href="#cb4-12"></a>      <span class="at">batches =</span> <span class="dv">1000</span>,</span>
-<span id="cb4-13"><a href="#cb4-13"></a>      <span class="at">reps =</span> <span class="dv">1</span></span>
-<span id="cb4-14"><a href="#cb4-14"></a>    ),</span>
-<span id="cb4-15"><a href="#cb4-15"></a></span>
-<span id="cb4-16"><a href="#cb4-16"></a><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
 <section id="step-2-define-the-pipeline-in-_targets.r-3" class="slide level2">
 <h2><span style="font-size:80%">Step 2: Define the pipeline in <code>_targets.R</code></span></h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># ...</span></span>
-<span id="cb5-2"><a href="#cb5-2"></a></span>
-<span id="cb5-3"><a href="#cb5-3"></a>    <span class="fu">tar_target</span>(</span>
-<span id="cb5-4"><a href="#cb5-4"></a>      results,</span>
-<span id="cb5-5"><a href="#cb5-5"></a>      <span class="fu">save_fst</span>(ranks, <span class="fu">sprintf</span>(<span class="st">"results/%s.fst"</span>, name)),</span>
-<span id="cb5-6"><a href="#cb5-6"></a>      <span class="at">deployment =</span> <span class="st">"main"</span></span>
-<span id="cb5-7"><a href="#cb5-7"></a>    )</span>
-<span id="cb5-8"><a href="#cb5-8"></a>  <span class="er">)</span></span>
-<span id="cb5-9"><a href="#cb5-9"></a><span class="er">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="co"># ...</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a></span>
+<span id="cb11-3"><a href="#cb11-3"></a><span class="fu">tar_source</span>() <span class="co"># Loads functions from scripts in R/</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a></span>
+<span id="cb11-5"><a href="#cb11-5"></a><span class="fu">list</span>(</span>
+<span id="cb11-6"><a href="#cb11-6"></a>  <span class="fu">tar_map</span>(</span>
+<span id="cb11-7"><a href="#cb11-7"></a>    <span class="at">values =</span> scenarios,</span>
+<span id="cb11-8"><a href="#cb11-8"></a>    <span class="fu">tar_target</span>(<span class="at">name =</span> prior, <span class="at">command =</span> <span class="fu">setup_prior</span>(scenario)),</span>
+<span id="cb11-9"><a href="#cb11-9"></a>    <span class="fu">tar_rep</span>(</span>
+<span id="cb11-10"><a href="#cb11-10"></a>      <span class="at">name =</span> ranks,</span>
+<span id="cb11-11"><a href="#cb11-11"></a>      <span class="at">command =</span> <span class="fu">run_simulation</span>(scenario, prior),</span>
+<span id="cb11-12"><a href="#cb11-12"></a>      <span class="at">batches =</span> <span class="dv">1000</span>,</span>
+<span id="cb11-13"><a href="#cb11-13"></a>      <span class="at">reps =</span> <span class="dv">1</span></span>
+<span id="cb11-14"><a href="#cb11-14"></a>    ),</span>
+<span id="cb11-15"><a href="#cb11-15"></a></span>
+<span id="cb11-16"><a href="#cb11-16"></a><span class="co"># ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="step-3-understand-the-pipeline" class="slide level2">
+<section id="step-2-define-the-pipeline-in-_targets.r-4" class="slide level2">
+<h2><span style="font-size:80%">Step 2: Define the pipeline in <code>_targets.R</code></span></h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="co"># ...</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a></span>
+<span id="cb12-3"><a href="#cb12-3"></a>    <span class="fu">tar_target</span>(</span>
+<span id="cb12-4"><a href="#cb12-4"></a>      results,</span>
+<span id="cb12-5"><a href="#cb12-5"></a>      <span class="fu">save_fst</span>(ranks, <span class="fu">sprintf</span>(<span class="st">"results/%s.fst"</span>, name)),</span>
+<span id="cb12-6"><a href="#cb12-6"></a>      <span class="at">deployment =</span> <span class="st">"main"</span></span>
+<span id="cb12-7"><a href="#cb12-7"></a>    )</span>
+<span id="cb12-8"><a href="#cb12-8"></a>  <span class="er">)</span></span>
+<span id="cb12-9"><a href="#cb12-9"></a><span class="er">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="step-3-understand-the-pipeline-1" class="slide level2">
 <h2>Step 3: understand the pipeline</h2>
 <div style="font-size:80%">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">tar_mermaid</span>(</span>
-<span id="cb6-2"><a href="#cb6-2"></a>  <span class="at">targets_only =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb6-3"><a href="#cb6-3"></a>  <span class="at">names =</span> <span class="fu">contains</span>(<span class="fu">c</span>(<span class="st">"unstructured"</span>, <span class="st">"compound_symmetry"</span>))</span>
-<span id="cb6-4"><a href="#cb6-4"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">tar_mermaid</span>(</span>
+<span id="cb13-2"><a href="#cb13-2"></a>  <span class="at">targets_only =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb13-3"><a href="#cb13-3"></a>  <span class="at">names =</span> <span class="fu">contains</span>(<span class="fu">c</span>(<span class="st">"unstructured"</span>, <span class="st">"compound_symmetry"</span>))</span>
+<span id="cb13-4"><a href="#cb13-4"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 
 <img data-src="./images/graph-mermaid.png" class="r-stretch"></section>
-<section id="step-3-understand-the-pipeline-1" class="slide level2">
+<section id="step-3-understand-the-pipeline-2" class="slide level2">
 <h2>Step 3: understand the pipeline</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">tar_visnetwork</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">tar_visnetwork</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 
 <img data-src="./images/graph-full.png" class="r-stretch"></section>
-<section id="step-3-understand-the-pipeline-2" class="slide level2">
+<section id="step-3-understand-the-pipeline-3" class="slide level2">
 <h2>Step 3: understand the pipeline</h2>
 <div>
 <ul>
@@ -661,7 +833,7 @@ r &amp;= \sum_{m = 1}^M I \left [ \theta^{(m)} &lt; \theta^{\text{sim}} \right ]
 </div>
 
 <img data-src="./images/graph-highlight.png" class="r-stretch"></section>
-<section id="step-3-understand-the-pipeline-3" class="slide level2">
+<section id="step-3-understand-the-pipeline-4" class="slide level2">
 <h2>Step 3: understand the pipeline</h2>
 <div>
 <ul>
@@ -670,54 +842,54 @@ r &amp;= \sum_{m = 1}^M I \left [ \theta^{(m)} &lt; \theta^{\text{sim}} \right ]
 </div>
 
 <img data-src="./images/graph-zoom.png" class="r-stretch"></section>
-<section id="step-3-understand-the-pipeline-4" class="slide level2">
+<section id="step-3-understand-the-pipeline-5" class="slide level2">
 <h2>Step 3: understand the pipeline</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">tar_outdated</span>()</span>
-<span id="cb8-2"><a href="#cb8-2"></a><span class="co">#&gt;  [1] "ranks_batch_compound_symmetry"            </span></span>
-<span id="cb8-3"><a href="#cb8-3"></a><span class="co">#&gt;  [2] "ranks_moving_average"                     </span></span>
-<span id="cb8-4"><a href="#cb8-4"></a><span class="co">#&gt;  [3] "ranks_diagonal"                           </span></span>
-<span id="cb8-5"><a href="#cb8-5"></a><span class="co">#&gt;  [4] "results_diagonal"                         </span></span>
-<span id="cb8-6"><a href="#cb8-6"></a><span class="co">#&gt;  [5] "prior_diagonal"                           </span></span>
-<span id="cb8-7"><a href="#cb8-7"></a><span class="co">#&gt;  [6] "ranks_batch_autoregressive"               </span></span>
-<span id="cb8-8"><a href="#cb8-8"></a><span class="co">#&gt;  [7] "results_moving_average"                   </span></span>
-<span id="cb8-9"><a href="#cb8-9"></a><span class="co">#&gt;  [8] "prior_unstructured"                       </span></span>
-<span id="cb8-10"><a href="#cb8-10"></a><span class="co">#&gt;  [9] "prior_compound_symmetry"                  </span></span>
-<span id="cb8-11"><a href="#cb8-11"></a><span class="co">#&gt; [10] "results_subgroup"                         </span></span>
-<span id="cb8-12"><a href="#cb8-12"></a><span class="co">#&gt; [11] "prior_autoregressive_moving_average"      </span></span>
-<span id="cb8-13"><a href="#cb8-13"></a><span class="co">#&gt; [12] "results_compound_symmetry"                </span></span>
-<span id="cb8-14"><a href="#cb8-14"></a><span class="co">#&gt; [13] "results_autoregressive_moving_average"    </span></span>
-<span id="cb8-15"><a href="#cb8-15"></a><span class="co">#&gt; [14] "ranks_subgroup"                           </span></span>
-<span id="cb8-16"><a href="#cb8-16"></a><span class="co">#&gt; [15] "ranks_compound_symmetry"                  </span></span>
-<span id="cb8-17"><a href="#cb8-17"></a><span class="co">#&gt; [16] "prior_autoregressive"                     </span></span>
-<span id="cb8-18"><a href="#cb8-18"></a><span class="co">#&gt; [17] "prior_moving_average"                     </span></span>
-<span id="cb8-19"><a href="#cb8-19"></a><span class="co">#&gt; [18] "ranks_batch_diagonal"                     </span></span>
-<span id="cb8-20"><a href="#cb8-20"></a><span class="co">#&gt; [19] "ranks_batch_subgroup"                     </span></span>
-<span id="cb8-21"><a href="#cb8-21"></a><span class="co">#&gt; [20] "ranks_autoregressive"                     </span></span>
-<span id="cb8-22"><a href="#cb8-22"></a><span class="co">#&gt; [21] "ranks_batch_moving_average"               </span></span>
-<span id="cb8-23"><a href="#cb8-23"></a><span class="co">#&gt; [22] "ranks_batch_autoregressive_moving_average"</span></span>
-<span id="cb8-24"><a href="#cb8-24"></a><span class="co">#&gt; [23] "results_unstructured"                     </span></span>
-<span id="cb8-25"><a href="#cb8-25"></a><span class="co">#&gt; [24] "ranks_batch_unstructured"                 </span></span>
-<span id="cb8-26"><a href="#cb8-26"></a><span class="co">#&gt; [25] "results_autoregressive"                   </span></span>
-<span id="cb8-27"><a href="#cb8-27"></a><span class="co">#&gt; [26] "prior_subgroup"                           </span></span>
-<span id="cb8-28"><a href="#cb8-28"></a><span class="co">#&gt; [27] "ranks_autoregressive_moving_average"      </span></span>
-<span id="cb8-29"><a href="#cb8-29"></a><span class="co">#&gt; [28] "ranks_unstructured"                    </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">tar_outdated</span>()</span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="co">#&gt;  [1] "ranks_batch_compound_symmetry"            </span></span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="co">#&gt;  [2] "ranks_moving_average"                     </span></span>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="co">#&gt;  [3] "ranks_diagonal"                           </span></span>
+<span id="cb15-5"><a href="#cb15-5"></a><span class="co">#&gt;  [4] "results_diagonal"                         </span></span>
+<span id="cb15-6"><a href="#cb15-6"></a><span class="co">#&gt;  [5] "prior_diagonal"                           </span></span>
+<span id="cb15-7"><a href="#cb15-7"></a><span class="co">#&gt;  [6] "ranks_batch_autoregressive"               </span></span>
+<span id="cb15-8"><a href="#cb15-8"></a><span class="co">#&gt;  [7] "results_moving_average"                   </span></span>
+<span id="cb15-9"><a href="#cb15-9"></a><span class="co">#&gt;  [8] "prior_unstructured"                       </span></span>
+<span id="cb15-10"><a href="#cb15-10"></a><span class="co">#&gt;  [9] "prior_compound_symmetry"                  </span></span>
+<span id="cb15-11"><a href="#cb15-11"></a><span class="co">#&gt; [10] "results_subgroup"                         </span></span>
+<span id="cb15-12"><a href="#cb15-12"></a><span class="co">#&gt; [11] "prior_autoregressive_moving_average"      </span></span>
+<span id="cb15-13"><a href="#cb15-13"></a><span class="co">#&gt; [12] "results_compound_symmetry"                </span></span>
+<span id="cb15-14"><a href="#cb15-14"></a><span class="co">#&gt; [13] "results_autoregressive_moving_average"    </span></span>
+<span id="cb15-15"><a href="#cb15-15"></a><span class="co">#&gt; [14] "ranks_subgroup"                           </span></span>
+<span id="cb15-16"><a href="#cb15-16"></a><span class="co">#&gt; [15] "ranks_compound_symmetry"                  </span></span>
+<span id="cb15-17"><a href="#cb15-17"></a><span class="co">#&gt; [16] "prior_autoregressive"                     </span></span>
+<span id="cb15-18"><a href="#cb15-18"></a><span class="co">#&gt; [17] "prior_moving_average"                     </span></span>
+<span id="cb15-19"><a href="#cb15-19"></a><span class="co">#&gt; [18] "ranks_batch_diagonal"                     </span></span>
+<span id="cb15-20"><a href="#cb15-20"></a><span class="co">#&gt; [19] "ranks_batch_subgroup"                     </span></span>
+<span id="cb15-21"><a href="#cb15-21"></a><span class="co">#&gt; [20] "ranks_autoregressive"                     </span></span>
+<span id="cb15-22"><a href="#cb15-22"></a><span class="co">#&gt; [21] "ranks_batch_moving_average"               </span></span>
+<span id="cb15-23"><a href="#cb15-23"></a><span class="co">#&gt; [22] "ranks_batch_autoregressive_moving_average"</span></span>
+<span id="cb15-24"><a href="#cb15-24"></a><span class="co">#&gt; [23] "results_unstructured"                     </span></span>
+<span id="cb15-25"><a href="#cb15-25"></a><span class="co">#&gt; [24] "ranks_batch_unstructured"                 </span></span>
+<span id="cb15-26"><a href="#cb15-26"></a><span class="co">#&gt; [25] "results_autoregressive"                   </span></span>
+<span id="cb15-27"><a href="#cb15-27"></a><span class="co">#&gt; [26] "prior_subgroup"                           </span></span>
+<span id="cb15-28"><a href="#cb15-28"></a><span class="co">#&gt; [27] "ranks_autoregressive_moving_average"      </span></span>
+<span id="cb15-29"><a href="#cb15-29"></a><span class="co">#&gt; [28] "ranks_unstructured"                    </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="step-4-run-the-pipeline" class="slide level2">
 <h2>Step 4: run the pipeline</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">tar_make</span>()</span>
-<span id="cb9-2"><a href="#cb9-2"></a><span class="co">#&gt; ...</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a><span class="co">#&gt; ▶ dispatched target prior_subgroup</span></span>
-<span id="cb9-4"><a href="#cb9-4"></a><span class="co">#&gt; ▶ dispatched target prior_moving_average</span></span>
-<span id="cb9-5"><a href="#cb9-5"></a><span class="co">#&gt; ▶ dispatched target prior_diagonal</span></span>
-<span id="cb9-6"><a href="#cb9-6"></a><span class="co">#&gt; ...</span></span>
-<span id="cb9-7"><a href="#cb9-7"></a><span class="co">#&gt; ▶ dispatched branch ranks_moving_average_0622a4a0a1459592</span></span>
-<span id="cb9-8"><a href="#cb9-8"></a><span class="co">#&gt; ▶ dispatched branch ranks_autoregressive_average_4d6e2b84dfce31bc</span></span>
-<span id="cb9-9"><a href="#cb9-9"></a><span class="co">#&gt; ● completed branch ranks_unstructured_391a8253aae8fc3e [1.321 hours]</span></span>
-<span id="cb9-10"><a href="#cb9-10"></a><span class="co">#&gt; ● completed branch ranks_unstructured_6fc2a563c4c2fecc [1.265 hours]</span></span>
-<span id="cb9-11"><a href="#cb9-11"></a><span class="co">#&gt; ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">tar_make</span>()</span>
+<span id="cb16-2"><a href="#cb16-2"></a><span class="co">#&gt; ...</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a><span class="co">#&gt; ▶ dispatched target prior_subgroup</span></span>
+<span id="cb16-4"><a href="#cb16-4"></a><span class="co">#&gt; ▶ dispatched target prior_moving_average</span></span>
+<span id="cb16-5"><a href="#cb16-5"></a><span class="co">#&gt; ▶ dispatched target prior_diagonal</span></span>
+<span id="cb16-6"><a href="#cb16-6"></a><span class="co">#&gt; ...</span></span>
+<span id="cb16-7"><a href="#cb16-7"></a><span class="co">#&gt; ▶ dispatched branch ranks_moving_average_0622a4a0a1459592</span></span>
+<span id="cb16-8"><a href="#cb16-8"></a><span class="co">#&gt; ▶ dispatched branch ranks_autoregressive_average_4d6e2b84dfce31bc</span></span>
+<span id="cb16-9"><a href="#cb16-9"></a><span class="co">#&gt; ● completed branch ranks_unstructured_391a8253aae8fc3e [1.321 hours]</span></span>
+<span id="cb16-10"><a href="#cb16-10"></a><span class="co">#&gt; ● completed branch ranks_unstructured_6fc2a563c4c2fecc [1.265 hours]</span></span>
+<span id="cb16-11"><a href="#cb16-11"></a><span class="co">#&gt; ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="behind-the-scenes-distributed-computing" class="slide level2">
@@ -739,22 +911,22 @@ r &amp;= \sum_{m = 1}^M I \left [ \theta^{(m)} &lt; \theta^{\text{sim}} \right ]
 <section id="step-5-inspect-results" class="slide level2">
 <h2>Step 5: inspect results</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a><span class="fu">tar_read</span>(ranks_unstructured)</span>
-<span id="cb10-2"><a href="#cb10-2"></a><span class="co">#&gt; # A tibble: 1,000 × 19</span></span>
-<span id="cb10-3"><a href="#cb10-3"></a><span class="co">#&gt;    b_groupgroup_1 b_groupgroup_2 b_groupgroup_3 b_timetime_2</span></span>
-<span id="cb10-4"><a href="#cb10-4"></a><span class="co">#&gt;             &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;        &lt;dbl&gt;</span></span>
-<span id="cb10-5"><a href="#cb10-5"></a><span class="co">#&gt;  1           4104           2573           3593         8346</span></span>
-<span id="cb10-6"><a href="#cb10-6"></a><span class="co">#&gt;  2          11074          10962          10986         2911</span></span>
-<span id="cb10-7"><a href="#cb10-7"></a><span class="co">#&gt;  3           9407          10515           9904         2703</span></span>
-<span id="cb10-8"><a href="#cb10-8"></a><span class="co">#&gt;  4           6878             28            728         9672</span></span>
-<span id="cb10-9"><a href="#cb10-9"></a><span class="co">#&gt;  5           3467           3365           3510        11599</span></span>
-<span id="cb10-10"><a href="#cb10-10"></a><span class="co">#&gt;  6           6156           7975           6034         9547</span></span>
-<span id="cb10-11"><a href="#cb10-11"></a><span class="co">#&gt;  7           6971           5843           1357        11736</span></span>
-<span id="cb10-12"><a href="#cb10-12"></a><span class="co">#&gt;  8           1289            762           3830        10178</span></span>
-<span id="cb10-13"><a href="#cb10-13"></a><span class="co">#&gt;  9           8738           6655          10501         2387</span></span>
-<span id="cb10-14"><a href="#cb10-14"></a><span class="co">#&gt; 10           7985           7380           6802         6918</span></span>
-<span id="cb10-15"><a href="#cb10-15"></a><span class="co">#&gt; # ℹ 990 more rows</span></span>
-<span id="cb10-16"><a href="#cb10-16"></a><span class="co">#&gt; # ℹ 15 more variables...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">tar_read</span>(ranks_unstructured)</span>
+<span id="cb17-2"><a href="#cb17-2"></a><span class="co">#&gt; # A tibble: 1,000 × 19</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a><span class="co">#&gt;    b_groupgroup_1 b_groupgroup_2 b_groupgroup_3 b_timetime_2</span></span>
+<span id="cb17-4"><a href="#cb17-4"></a><span class="co">#&gt;             &lt;dbl&gt;          &lt;dbl&gt;          &lt;dbl&gt;        &lt;dbl&gt;</span></span>
+<span id="cb17-5"><a href="#cb17-5"></a><span class="co">#&gt;  1           4104           2573           3593         8346</span></span>
+<span id="cb17-6"><a href="#cb17-6"></a><span class="co">#&gt;  2          11074          10962          10986         2911</span></span>
+<span id="cb17-7"><a href="#cb17-7"></a><span class="co">#&gt;  3           9407          10515           9904         2703</span></span>
+<span id="cb17-8"><a href="#cb17-8"></a><span class="co">#&gt;  4           6878             28            728         9672</span></span>
+<span id="cb17-9"><a href="#cb17-9"></a><span class="co">#&gt;  5           3467           3365           3510        11599</span></span>
+<span id="cb17-10"><a href="#cb17-10"></a><span class="co">#&gt;  6           6156           7975           6034         9547</span></span>
+<span id="cb17-11"><a href="#cb17-11"></a><span class="co">#&gt;  7           6971           5843           1357        11736</span></span>
+<span id="cb17-12"><a href="#cb17-12"></a><span class="co">#&gt;  8           1289            762           3830        10178</span></span>
+<span id="cb17-13"><a href="#cb17-13"></a><span class="co">#&gt;  9           8738           6655          10501         2387</span></span>
+<span id="cb17-14"><a href="#cb17-14"></a><span class="co">#&gt; 10           7985           7380           6802         6918</span></span>
+<span id="cb17-15"><a href="#cb17-15"></a><span class="co">#&gt; # ℹ 990 more rows</span></span>
+<span id="cb17-16"><a href="#cb17-16"></a><span class="co">#&gt; # ℹ 15 more variables...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="step-5-inspect-results-1" class="slide level2">
@@ -768,28 +940,28 @@ r &amp;= \sum_{m = 1}^M I \left [ \theta^{(m)} &lt; \theta^{\text{sim}} \right ]
 <section id="step-6-iterate-as-needed" class="slide level2">
 <h2>Step 6: iterate as needed</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a><span class="fu">tar_make</span>()</span>
-<span id="cb11-2"><a href="#cb11-2"></a><span class="co">#&gt; ...</span></span>
-<span id="cb11-3"><a href="#cb11-3"></a><span class="co">#&gt; ✔ skipped target prior_subgroup</span></span>
-<span id="cb11-4"><a href="#cb11-4"></a><span class="co">#&gt; ▶ dispatched target unstructured</span></span>
-<span id="cb11-5"><a href="#cb11-5"></a><span class="co">#&gt; ...</span></span>
-<span id="cb11-6"><a href="#cb11-6"></a><span class="co">#&gt; ✔ skipped branch ranks_subgroup_42f1f9eb12129c61</span></span>
-<span id="cb11-7"><a href="#cb11-7"></a><span class="co">#&gt; ▶ dispatched branch ranks_unstructured_a5f4994d5939727e</span></span>
-<span id="cb11-8"><a href="#cb11-8"></a><span class="co">#&gt; ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a><span class="fu">tar_make</span>()</span>
+<span id="cb18-2"><a href="#cb18-2"></a><span class="co">#&gt; ...</span></span>
+<span id="cb18-3"><a href="#cb18-3"></a><span class="co">#&gt; ✔ skipped target prior_subgroup</span></span>
+<span id="cb18-4"><a href="#cb18-4"></a><span class="co">#&gt; ▶ dispatched target unstructured</span></span>
+<span id="cb18-5"><a href="#cb18-5"></a><span class="co">#&gt; ...</span></span>
+<span id="cb18-6"><a href="#cb18-6"></a><span class="co">#&gt; ✔ skipped branch ranks_subgroup_42f1f9eb12129c61</span></span>
+<span id="cb18-7"><a href="#cb18-7"></a><span class="co">#&gt; ▶ dispatched branch ranks_unstructured_a5f4994d5939727e</span></span>
+<span id="cb18-8"><a href="#cb18-8"></a><span class="co">#&gt; ...</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="step-6-iterate-as-needed-1" class="slide level2">
 <h2>Step 6: iterate as needed</h2>
 <p><br></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a><span class="fu">tar_outdated</span>()</span>
-<span id="cb12-2"><a href="#cb12-2"></a><span class="co">#&gt; character(0)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a><span class="fu">tar_outdated</span>()</span>
+<span id="cb19-2"><a href="#cb19-2"></a><span class="co">#&gt; character(0)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><br></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="fu">tar_make</span>()</span>
-<span id="cb13-2"><a href="#cb13-2"></a><span class="co">#&gt; ...</span></span>
-<span id="cb13-3"><a href="#cb13-3"></a><span class="co">#&gt; ✔ skipped pipeline [2.357 minutes]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">tar_make</span>()</span>
+<span id="cb20-2"><a href="#cb20-2"></a><span class="co">#&gt; ...</span></span>
+<span id="cb20-3"><a href="#cb20-3"></a><span class="co">#&gt; ✔ skipped pipeline [2.357 minutes]</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="recap" class="slide level2">
