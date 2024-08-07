@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "locale": "en_US",
+  "platform": "4.4.0",
+  "metadata": {
+    "appmode": "static",
+    "primary_rmd": null,
+    "primary_html": "index.html",
+    "content_category": "site",
+    "has_parameters": false
+  },
+  "packages": null,
+  "files": {
+    "images/airgraph1.png": {
+      "checksum": "d4ac6efa4e253aff3b65031b026aad85"
+    },
+    "images/airgraph2.png": {
+      "checksum": "d74b36df21238d1e89c24481043ff6ee"
+    },
+    "images/airgraph3.png": {
+      "checksum": "8472d01742d31c0b28804a56dc5583d0"
+    },
+    "images/airquality.png": {
+      "checksum": "acd7378df5899a472c5486b6d765bcc5"
+    },
+    "images/batch.jpeg": {
+      "checksum": "63969b79a9e18871ecb61c24504af1f2"
+    },
+    "images/brms.mmrm.png": {
+      "checksum": "0a79caee08418ad84a544869834064a6"
+    },
+    "images/change.png": {
+      "checksum": "25dac7fde84fd53c641bfc0fb7eb7193"
+    },
+    "images/crew.png": {
+      "checksum": "29fa9f70b2a8ca0fe55b9fdf31dac309"
+    },
+    "images/decisions.png": {
+      "checksum": "93f6374a3d1647edd9136015da110678"
+    },
+    "images/downstream.png": {
+      "checksum": "c0641c69ca6b55593d14ba7fb96d644f"
+    },
+    "images/fev.png": {
+      "checksum": "2d7aad7c068b1a0ec2699122fe054550"
+    },
+    "images/github.png": {
+      "checksum": "fddcf38ba65766e8bbc33526dadd5592"
+    },
+    "images/graph-full.png": {
+      "checksum": "57a3cff5497234f079339b7485610361"
+    },
+    "images/graph-glimpse.png": {
+      "checksum": "10f3f5ba03c23b077498d69b4697e156"
+    },
+    "images/graph-highlight.png": {
+      "checksum": "51a6eb73af0e31e719b7c1d0cc53ae1e"
+    },
+    "images/graph-mermaid.png": {
+      "checksum": "52f450dc31443b588af2f2cbbf8d276c"
+    },
+    "images/graph-zoom.png": {
+      "checksum": "bbfc68e5382febb260f93577c48f3a80"
+    },
+    "images/hmc.png": {
+      "checksum": "476d4ea341e424c957569cf6c5f589c4"
+    },
+    "images/hpc1.jpg": {
+      "checksum": "79a57c6abd49fb51984564ee69f3f772"
+    },
+    "images/hpc2.jpg": {
+      "checksum": "446065886ef4c25622790ff274500139"
+    },
+    "images/images.pptx": {
+      "checksum": "12a91a8ffa0c1e3106fe72643805e3c8"
+    },
+    "images/infographic.png": {
+      "checksum": "08b103d4c825ea9a80798b765ebdc20d"
+    },
+    "images/knuth.png": {
+      "checksum": "4b9541e0cf09ac83e789892b262d73a6"
+    },
+    "images/link.svg": {
+      "checksum": "423fc53540a91959547c61faeb9c5047"
+    },
+    "images/make.png": {
+      "checksum": "6542fc6b6356e4306b4897765d35334d"
+    },
+    "images/parallel1.png": {
+      "checksum": "8855758fd4a1993e7a2a3f7b8922048a"
+    },
+    "images/parallel2.png": {
+      "checksum": "41ad5089e5c8ee0ffcb5477bead05783"
+    },
+    "images/parallel3.png": {
+      "checksum": "6adf1d22b926b16b31a6fcb9098d6634"
+    },
+    "images/parallel4.png": {
+      "checksum": "ca607494b13494fac8779b4fd8799e65"
+    },
+    "images/pipeline_graph.png": {
+      "checksum": "9fb17a94c868b8bb2f313ca108619484"
+    },
+    "images/pipeline-def.png": {
+      "checksum": "d8cda595c0ac6da5f72ac693b48f1df1"
+    },
+    "images/quarto.png": {
+      "checksum": "48b5c3d0e7c4432c8962521ffcaab563"
+    },
+    "images/ranks.png": {
+      "checksum": "74a289c9f5e9749170d0dd2f419a1528"
+    },
+    "images/reality.png": {
+      "checksum": "ebfd3ae710e651df3b3a2841bc2346a7"
+    },
+    "images/renv.png": {
+      "checksum": "d85264d87a8066594e69b16aeff358d4"
+    },
+    "images/targets-problem-solution.png": {
+      "checksum": "71119df3c0045f004dab972fc7571ee5"
+    },
+    "images/targets.png": {
+      "checksum": "5346ed955faa6a799c85d40b679cd033"
+    },
+    "images/timeline.png": {
+      "checksum": "7550183e8d918bbf7dc3594254c5c780"
+    },
+    "images/workflow.png": {
+      "checksum": "4ef5ce2b00de37abdd6baee97b9d0d74"
+    },
+    "index.html": {
+      "checksum": "5ee825d831b465838883617469b4ba2d"
+    }
+  },
+  "users": null
+}
