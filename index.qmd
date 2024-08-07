@@ -122,7 +122,7 @@ knitr::opts_chunk$set(eval = FALSE, echo = TRUE)
 ::: {style="font-size:80%"}
 
 * Existing pipeline tools: <https://github.com/pditommaso/awesome-pipeline>
-* Outside the field of classical statistics.
+* Most not designed for classical Statistics.
 * Most are language-agnostic or designed for Python or the shell.
 
 :::
