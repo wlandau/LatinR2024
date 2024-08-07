@@ -127,7 +127,7 @@ knitr::opts_chunk$set(eval = FALSE, echo = TRUE)
 
 :::
 
-## Make-like pipelines for data science
+## Make-like pipelines for Statistics
 
 ![](./images/timeline.png)
 
