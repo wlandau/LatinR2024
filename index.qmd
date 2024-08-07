@@ -10,7 +10,7 @@ format:
 
 <center>
 <br>
-<h3>A friendly solution to scary problems</h3>
+<h3>A rediscovery from different field</h3>
 <img src="./images/targets.png" height="400px">
 <br>
 <h4>Will Landau</h4>
@@ -22,39 +22,51 @@ knitr::opts_chunk$set(eval = FALSE, echo = TRUE)
 
 ## Background
 
-<br>
+:::: {.columns}
+
+::: {.column width="50%"}
 
 * Training:
-    * Bayesian methods
+    * Bayesian Statistics
     * Iowa State University, 2011-2016
 * Career:
-    * Tools for statisticians (such as [`targets`](https://docs.ropensci.org/targets))
+    * Methods and tools for clinical trials
     * Eli Lilly and Company, 2016-present
 
-## <span style="font-size:70%">Scary problems with non-statistical solutions</span>
+:::
+
+::: {.column width="50%"}
+
+![](./images/normal.png)
+
+:::
+
+::::
+
+## <span style="font-size:70%">Hidden problems with non-statistical solutions</span>
 
 ![](./images/github.png)
 
-## <span style="font-size:70%">Scary problems with non-statistical solutions</span>
+## <span style="font-size:70%">Hidden problems with non-statistical solutions</span>
 
 ![](./images/renv.png)
 
 
-## <span style="font-size:70%">Scary problems with non-statistical solutions</span>
+## <span style="font-size:70%">Hidden problems with non-statistical solutions</span>
 
 ![](./images/knuth.png)
 
 
-## <span style="font-size:70%">Scary problems with non-statistical solutions</span>
+## <span style="font-size:70%">Hidden problems with non-statistical solutions</span>
 
 ![](./images/quarto.png)
 
-## <span style="font-size:70%">Scary problems with non-statistical solutions</span>
+## <span style="font-size:70%">Hidden problems with non-statistical solutions</span>
 
 ![](./images/make.png)
 
 
-## <span style="font-size:70%">Scary problems with non-statistical solutions</span>
+## <span style="font-size:70%">Hidden problems with non-statistical solutions</span>
 
 ![](./images/targets-problem-solution.png)
 
@@ -110,6 +122,7 @@ knitr::opts_chunk$set(eval = FALSE, echo = TRUE)
 ::: {style="font-size:80%"}
 
 * Existing pipeline tools: <https://github.com/pditommaso/awesome-pipeline>
+* Outside the field of classical statistics.
 * Most are language-agnostic or designed for Python or the shell.
 
 :::
@@ -448,7 +461,7 @@ tar_make()
 
 :::
 
-## Scary example: Bayesian model validation {data-background-color=skyblue}
+## Formidable example: Bayesian model validation {data-background-color=skyblue}
 
 ## Bayesian MMRM
 
@@ -473,7 +486,7 @@ tar_make()
 ::: {style="font-size: 75%"}
 
 * Stan uses Hamiltonian Monte Carlo (HMC) to draw from the posterior distribution.
-* Based on a physics simulation of a marble rolling around in a smooth bowl.
+* <span style="color:blue">**HMC is based on a physics simulation!**</span>
 :::
 
 ## Computational demands of Stan
@@ -482,7 +495,7 @@ tar_make()
 
 ::: {style="font-size: 75%"}
 
-* Bowl is moderately high-dimensional for MMRMs.
+* MMRMs are moderately high-dimensional.
 * Could take several minutes or hours to fit a single model!
 :::
 
@@ -822,7 +835,8 @@ tar_make()
 * Statistical work comes with scary non-statistical problems.
 * Solutions:
     1. Often come from software engineering.
-    2. Are essential to the practice of Statistics and data science.
+    2. Are game-changers Statistics and data science.
+* Non-statistical breakthroughs are waiting for statisticians to rediscover them.
 
 ## Thanks!
 
