@@ -24,10 +24,10 @@ knitr::opts_chunk$set(eval = FALSE, echo = TRUE)
 
 <br>
 
-* Training
+* Training:
     * Bayesian methods
     * Iowa State University, 2011-2016
-* Career
+* Career:
     * Tools for statisticians (such as [`targets`](https://docs.ropensci.org/targets))
     * Eli Lilly and Company, 2016-present
 
@@ -39,15 +39,26 @@ knitr::opts_chunk$set(eval = FALSE, echo = TRUE)
 
 ![](./images/renv.png)
 
+
+## <span style="font-size:70%">Scary problems with non-statistical solutions</span>
+
+![](./images/knuth.png)
+
+
 ## <span style="font-size:70%">Scary problems with non-statistical solutions</span>
 
 ![](./images/quarto.png)
 
 ## <span style="font-size:70%">Scary problems with non-statistical solutions</span>
 
+![](./images/make.png)
+
+
+## <span style="font-size:70%">Scary problems with non-statistical solutions</span>
+
 ![](./images/targets-problem-solution.png)
 
-## Repetition: the overlooked bane of long computation
+## Repetition and long computation
 
 <br>
 
@@ -64,16 +75,26 @@ knitr::opts_chunk$set(eval = FALSE, echo = TRUE)
 ![](./images/change.png)
 
 
-## ...the downstream steps are no longer valid.
+## <span style="font-size:80%">...the downstream steps are no longer valid.</span>
 
 ![](./images/downstream.png)
 
-## Dilemma: short runtimes or reproducible results?
+## <span style="font-size:75%">Dilemma: short runtimes or reproducible results?</span>
 
 ![](./images/decisions.png)
 
+## Pipelines to the rescue!
 
-## Let a pipeline tool figure out what to rerun.
+<center>
+<img src="./images/pipeline-def.png" height="200">
+</center>
+
+* A pipeline is a collection of computational steps.
+* Each step can depend on previous steps.
+* Run upstream dependencies before downstream steps.
+* Skip steps whose code and dependencies did not change.
+
+## <span style="font-size:85%">Let a pipeline tool figure out what to rerun.</span>
 
 ![](./images/pipeline_graph.png)
 
@@ -93,6 +114,10 @@ knitr::opts_chunk$set(eval = FALSE, echo = TRUE)
 
 :::
 
+## Make-like pipelines for data science
+
+![](./images/timeline.png)
+
 ## `targets`
 
 <center>
@@ -100,28 +125,26 @@ knitr::opts_chunk$set(eval = FALSE, echo = TRUE)
 </center>
 
 * Fundamentally designed for R.
-* Supports a clean, modular, function-oriented programming style.
+* Supports a clean, modular, function-oriented style.
 * Abstracts files as R objects and automatically manages data.
 
 
-## <span style="font-size:80%">What is a pipeline?
+## How to use `targets`
 
-<center>
-<img src="./images/pipeline-def.png" height="200">
-</center>
+<br>
 
-* A collection of computational steps.
-* Each step can depend on previous steps.
-* Run upstream dependencies before downstream steps.
-* Skip steps whose code and dependencies did not change.
+1. Write functions.
+2. Define the pipeline in `_targets.R`.
+3. Understand the pipeline.
+4. Run the pipeline.
+5. Inspect results.
+6. Iterate as needed.
 
-
-
-## Simple example: air quality data analysis {data-background-color=skyblue}
+## Simple example: air quality analysis {data-background-color=skyblue}
 
 
 
-## Simple analysis of air quality data
+## Simple example: air quality analysis
 
 <br>
 
@@ -140,7 +163,7 @@ data <- read_csv("data.csv", col_types = cols()) %>%
 
 :::
 
-## Simple analysis of air quality data
+## Simple example: air quality analysis
 
 <br>
 
@@ -160,7 +183,7 @@ plot <- ggplot(data) +
 
 :::
 
-## Simple analysis of air quality data
+## Simple example: air quality analysis
 
 ```{r}
 plot
@@ -168,8 +191,7 @@ plot
 
 ![](./images/airquality)
 
-
-## Step 1: write functions
+## Step 1: Write functions.
 
 ::: {.nonincremental}
 
@@ -186,7 +208,7 @@ plot
     * Personal shorthand
 3. Reusable: define once, call from wherever.
 
-## Step 1: Write functions
+## Step 1: Write functions.
 
 ::: {style="font-size:150%"}
 
@@ -206,7 +228,7 @@ fit_model <- function(data) {
 
 :::
 
-## Step 1: Write functions
+## Step 1: Write functions.
 
 ::: {style="font-size:150%"}
 
@@ -225,7 +247,7 @@ plot_results <- function(data, model) {
 
 :::
 
-## <span style="font-size:80%">Step 2: Define the pipeline in `_targets.R`</span>
+## <span style="font-size:80%">Step 2: Define the pipeline in `_targets.R`.</span>
 
 ::: {style="font-size:150%"}
 
@@ -239,7 +261,7 @@ list(
   tar_target(file, "data.csv", format = "file"),
   tar_target(data, process_data(file)),
   tar_target(model, fit_model(data)),
-  tar_target(plot, plot_results(model, data))
+  tar_target(plot, plot_results(data, model))
 )
 ```
 
@@ -252,7 +274,7 @@ list(
 
 :::
 
-## Step 3: understand the pipeline
+## Step 3: Understand the pipeline.
 
 ```{r}
 tar_visnetwork()
@@ -260,7 +282,171 @@ tar_visnetwork()
 
 ![](./images/airgraph1.png)
 
+## Step 3: Understand the pipeline.
 
+<br>
+
+::: {style="font-size:150%"}
+
+```{r}
+tar_manifest()
+#> # A tibble: 4 × 2
+#>   name  command                    
+#>   <chr> <chr>                      
+#> 1 file  "\"data.csv\""             
+#> 2 data  "process_data(file)"       
+#> 3 model "fit_model(data)"          
+#> 4 plot  "plot_results(data, model)"
+```
+
+:::
+
+## Step 3: Understand the pipeline.
+
+<br>
+
+::: {style="font-size:150%"}
+
+```{r}
+tar_outdated()
+#> [1] "file"  "plot"  "data"  "model"
+```
+
+:::
+
+## Step 4: Run the pipeline.
+
+<br>
+
+::: {style="font-size:150%"}
+
+```{r}
+tar_make()
+#> ▶ dispatched target file
+#> ● completed target file [0.098 seconds]
+#> ▶ dispatched target data
+#> ● completed target data [0.068 seconds]
+#> ▶ dispatched target model
+#> ● completed target model [0.002 seconds]
+#> ▶ dispatched target plot
+#> ● completed target plot [0.011 seconds]
+#> ▶ ended pipeline [0.271 seconds]
+```
+
+:::
+
+## Step 5: Inspect results.
+
+<br>
+
+::: {style="font-size:175%"}
+
+```{r}
+tar_read(model)
+#> (Intercept)        Temp 
+#> -146.995491    2.428703 
+```
+
+:::
+
+## Step 5: Inspect results.
+
+```{r}
+tar_read(plot)
+```
+
+![](./images/airquality.png)
+
+## Step 6: Iterate as needed.
+
+::: {style="font-size:150%"}
+
+```{r, `code-line-numbers`="7"}
+plot_results <- function(data, model) {
+  ggplot(data) +
+    geom_point(aes(x = Temp, y = Ozone))
+    geom_abline(
+      intercept = model[1],
+      slope = model[2],
+      color = "blue",
+      linewidth = 2
+    ) +
+    theme_gray(24)
+}
+```
+
+:::
+
+## Step 6: Iterate as needed.
+
+```{r}
+tar_visnetwork()
+```
+
+![](./images/airgraph2.png)
+
+## Step 6: Iterate as needed.
+
+<br>
+
+::: {style="font-size:175%"}
+
+```{r}
+tar_outdated()
+#> [1] "plot"
+```
+
+:::
+
+## Step 6: Iterate as needed.
+
+<br>
+
+::: {style="font-size:150%"}
+
+```{r}
+tar_make()
+#> ✔ skipped target file
+#> ✔ skipped target data
+#> ✔ skipped target model
+#> ▶ dispatched target plot
+#> ● completed target plot [0.009 seconds]
+#> ▶ ended pipeline [0.376 seconds]
+```
+
+:::
+
+## Step 6: Iterate as needed.
+
+```{r}
+tar_visnetwork()
+```
+
+![](./images/airgraph3.png)
+
+## Step 6: Iterate as needed.
+
+<br>
+
+::: {style="font-size:150%"}
+
+```{r}
+tar_outdated()
+#> character(0)
+```
+
+<br>
+
+```{r}
+tar_make()
+#> ✔ skipped target file
+#> ✔ skipped target data
+#> ✔ skipped target model
+#> ✔ skipped target plot
+#> ✔ skipped pipeline [0.053 seconds]
+```
+
+:::
 
 ## Scary example: Bayesian model validation {data-background-color=skyblue}
 
@@ -352,7 +538,7 @@ $$
 
 :::
 
-## Step 1: write functions
+## Step 1: Write functions.
 
 ```{r}
 run_simulation <- function(
@@ -373,7 +559,7 @@ run_simulation <- function(
 
 * `run_simulation()` depends on `get_sbc_ranks()`, another user-defined function.
 
-## <span style="font-size:80%">Step 2: Define the pipeline in `_targets.R`</span>
+## <span style="font-size:80%">Step 2: Define the pipeline in `_targets.R`.</span>
 
 ```{r}
 library(targets)
@@ -392,7 +578,7 @@ tar_option_set(
 ```
 
 
-## <span style="font-size:80%">Step 2: Define the pipeline in `_targets.R`</span>
+## <span style="font-size:80%">Step 2: Define the pipeline in `_targets.R`.</span>
 
 ```{r}
 library(targets)
@@ -414,7 +600,7 @@ tar_option_set(
 * Distributed computing is powered by packages [`crew`](https://wlandau.github.io/crew) and [`mirai`](https://github.com/shikokuchuo/mirai).
 * <https://books.ropensci.org/targets/crew.html>
 
-## <span style="font-size:80%">Step 2: Define the pipeline in `_targets.R`</span>
+## <span style="font-size:80%">Step 2: Define the pipeline in `_targets.R`.</span>
 
 ```{r}
 # ...
@@ -435,7 +621,7 @@ list(
 # ...
 ```
 
-## <span style="font-size:80%">Step 2: Define the pipeline in `_targets.R`</span>
+## <span style="font-size:80%">Step 2: Define the pipeline in `_targets.R`.</span>
 
 ```{r}
 # ...
@@ -449,7 +635,7 @@ list(
 )
 ```
 
-## Step 3: understand the pipeline
+## Step 3: Understand the pipeline.
 
 ::: {style="font-size:80%"}
 
@@ -464,7 +650,7 @@ tar_mermaid(
 
 ![](./images/graph-mermaid.png)
 
-## Step 3: understand the pipeline
+## Step 3: Understand the pipeline.
 
 ```{r}
 tar_visnetwork()
@@ -473,7 +659,7 @@ tar_visnetwork()
 ![](./images/graph-full.png)
 
 
-## Step 3: understand the pipeline
+## Step 3: Understand the pipeline.
 
 ::: {.nonincremental}
 
@@ -483,7 +669,7 @@ tar_visnetwork()
 
 ![](./images/graph-highlight.png)
 
-## Step 3: understand the pipeline
+## Step 3: Understand the pipeline.
 
 ::: {.nonincremental}
 
@@ -493,7 +679,7 @@ tar_visnetwork()
 
 ![](./images/graph-zoom.png)
 
-## Step 3: understand the pipeline
+## Step 3: Understand the pipeline.
 
 ```{r}
 tar_outdated()
@@ -528,7 +714,7 @@ tar_outdated()
 ```
 
 
-## Step 4: run the pipeline
+## Step 4: Run the pipeline.
 
 ```{r}
 tar_make()
@@ -560,7 +746,7 @@ tar_make()
 
 ![](./images/parallel4.png)
 
-## Step 5: inspect results
+## Step 5: Inspect results.
 
 ```{r}
 tar_read(ranks_unstructured)
@@ -581,14 +767,18 @@ tar_read(ranks_unstructured)
 #> # ℹ 15 more variables...
 ```
 
-## Step 5: inspect results
+## Step 5: Inspect results.
 
 ![](./images/ranks.png)
 
 * Ranks are roughly uniform, model appears okay. 
 * <https://openpharma.github.io/brms.mmrm/articles/sbc.html>
 
-## Step 6: iterate as needed
+## Step 6: Iterate as needed.
+
+<br>
+
+::: {style="font-size:115%"}
 
 ```{r}
 tar_make()
@@ -601,9 +791,13 @@ tar_make()
 #> ...
 ```
 
-## Step 6: iterate as needed
+:::
+
+## Step 6: Iterate as needed.
 
 <br>
+
+::: {style="font-size:150%"}
 
 ```{r}
 tar_outdated()
@@ -618,10 +812,17 @@ tar_make()
 #> ✔ skipped pipeline [2.357 minutes]
 ```
 
+:::
+
 
 ## Recap
 
+<br>
 
+* Statistical work comes with scary non-statistical problems.
+* Solutions:
+    1. Often come from software engineering.
+    2. Are essential to the practice of Statistics and data science.
 
 ## Thanks!
 
