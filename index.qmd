@@ -836,7 +836,7 @@ tar_make()
 * Solutions:
     1. Often come from software engineering.
     2. Are game-changers Statistics and data science.
-* Non-statistical breakthroughs are waiting for statisticians to rediscover them.
+* Non-statistical breakthroughs are waiting for statisticians to notice them.
 
 ## Thanks!
 
