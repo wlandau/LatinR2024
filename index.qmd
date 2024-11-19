@@ -499,29 +499,41 @@ tar_make()
 * Could take several minutes or hours to fit a single model!
 :::
 
-## Validate {brms.mmrm} with SBC {.smaller}
+## Validation: simulation-based calibration (SBC) checking {style="font-size: 65%"}
 
 ::: {.nonincremental}
 
-* Simulation-based calibration (SBC) checking:
+* Problem: easy to simulate data correctly, hard to model it correctly.
+* Idea: design a simulation where the posterior is the same as the prior.
+* Repeat thousands of times:
 
 :::
 
-<br>
-
 $$
 \begin{aligned}
-\theta^{\text{sim}} &\sim p(\theta) \qquad &&\text{Draw parameters from the prior.} \\
-y^{\text{sim}} &\sim p(y | \theta^{\text{sim}}) \qquad &&\text{Draw data given parameters.} \\
-\theta^{(1)}, \ldots, \theta^{(M)} &\sim p(\theta | y^{\text{sim}})  \qquad &&\text{Draw HMC samples from the posterior} \\
-r &= \sum_{m = 1}^M I \left [ \theta^{(m)} < \theta^{\text{sim}} \right ] && \text{Count number of HMC samples} < \theta^{\text{sim}}
+\theta^{\text{sim}} &\sim p(\theta) \qquad &&\text{1. Draw parameters from the prior.} \\
+y^{\text{sim}} &\sim p(y | \theta^{\text{sim}}) \qquad &&\text{3. Draw data given parameters.} \\
+\theta^{(1)}, \ldots, \theta^{(M)} &\sim p(\theta | y^{\text{sim}})  \qquad &&\text{3. Draw HMC samples from the posterior} \\
 \end{aligned}
 $$
 
-<br>
+::: {.nonincremental}
 
-* Repeat for thousands of independent draws of $\theta^{\text{sim}}$!
-* Check that the rank statistics $r$ are uniformly distributed.
+* Equivalent to integrating out $y^{\text{sim}}$ to get the prior back:
+
+:::
+
+$$
+p(\theta) = \int p(\theta | y^{\text{sim}}) p(y^{\text{sim}} | \theta^{\text{sim}}) p(\theta^{\text{sim}}) d \theta^{\text{sim}}
+$$
+
+::: {.nonincremental}
+
+* Use ranks $\sum_{m = 1}^M I \left [ \theta^{(m)}_i < \theta^{\text{sim}}_i
+\right ]$ to check that the posterior and prior agree
+    * Ranks should be uniformly distributed.
+
+:::
 
 
 ## Too much work for one laptop
