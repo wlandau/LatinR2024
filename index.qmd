@@ -504,7 +504,7 @@ tar_make()
 ::: {.nonincremental}
 
 * Problem: easy to simulate data correctly, hard to model it correctly.
-* Idea: design a simulation where the posterior is the same as the prior.
+* Idea: design a simulation where the (estimated) posterior is the same as the (simulated) prior.
 * Repeat thousands of times:
 
 :::
