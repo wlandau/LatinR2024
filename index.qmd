@@ -857,7 +857,7 @@ tar_make()
 <https://wlandau.github.io/LatinR2024>
 </center>
 
-## References
+## References {.smaller}
 
 ::: {.nonincremental}
 
