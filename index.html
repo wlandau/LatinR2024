@@ -641,24 +641,24 @@ Will Landau
 <div>
 <ul>
 <li>Problem: easy to simulate data correctly, hard to model it correctly.</li>
-<li>Idea: design a simulation where the (estimated) posterior is the same as the (simulated) prior.</li>
+<li>Idea: design a simulation where the (estimated) posterior is the same as the (simulated) prior. (<a href="https://projecteuclid.org/journals/bayesian-analysis/volume--1/issue--1/Simulation-Based-Calibration-Checking-for-Bayesian-Computation--The-Choice/10.1214/23-BA1404.full">Modrák et al.&nbsp;(2023)</a>)</li>
 <li>Repeat thousands of times:</li>
 </ul>
 </div>
 <p><span class="math display">\[
 \begin{aligned}
 \theta^{\text{sim}} &amp;\sim p(\theta) \qquad &amp;&amp;\text{1. Draw parameters from the prior.} \\
-y^{\text{sim}} &amp;\sim p(y | \theta^{\text{sim}}) \qquad &amp;&amp;\text{3. Draw data given parameters.} \\
+y^{\text{sim}} &amp;\sim p(y | \theta^{\text{sim}}) \qquad &amp;&amp;\text{2. Draw data given parameters.} \\
 \theta^{(1)}, \ldots, \theta^{(M)} &amp;\sim p(\theta | y^{\text{sim}})  \qquad &amp;&amp;\text{3. Draw HMC samples from the posterior} \\
 \end{aligned}
 \]</span></p>
 <div>
 <ul>
-<li>Equivalent to integrating out <span class="math inline">\(y^{\text{sim}}\)</span> to get the prior back:</li>
+<li>Equivalent to integrating out <span class="math inline">\(\theta^{\text{sim}}\)</span> and <span class="math inline">\(y^{\text{sim}}\)</span> to get the prior back:</li>
 </ul>
 </div>
 <p><span class="math display">\[
-p(\theta) = \int p(\theta | y^{\text{sim}}) p(y^{\text{sim}} | \theta^{\text{sim}}) p(\theta^{\text{sim}}) d \theta^{\text{sim}}
+p(\theta) = \int \int p(\theta | y^{\text{sim}}) p(y^{\text{sim}} | \theta^{\text{sim}}) p(\theta^{\text{sim}}) d \theta^{\text{sim}} d y^{\text{sim}}
 \]</span></p>
 <div>
 <ul>
@@ -969,6 +969,16 @@ p(\theta) = \int p(\theta | y^{\text{sim}}) p(y^{\text{sim}} | \theta^{\text{sim
 <center>
 <img src="./images/link.svg" width="400"> <br> <a href="https://wlandau.github.io/LatinR2024" class="uri">https://wlandau.github.io/LatinR2024</a>
 </center>
+</section>
+<section id="references" class="slide level2">
+<h2>References</h2>
+<div>
+<ul>
+<li>Will Landau, Kevin Kunzmann, Yoni Sidi, Christian Stock (2024). “brms.mmrm: Bayesian MMRMs using ‘brms’”. R package version 1.1.1, <a href="https://openpharma.github.io/brms.mmrm/" class="uri">https://openpharma.github.io/brms.mmrm/</a>.</li>
+<li>Will Landau (2021). “The targets R package: a dynamic Make-like function-oriented pipeline toolkit for reproducibility and high-performance computing”. Journal of Open-Source Software, 6(57), <a href="https://doi.org/10.21105/joss.02959" class="uri">https://doi.org/10.21105/joss.02959</a>.</li>
+<li>Martin Modrák, Angie H. Moon, Shinyoung Kim, Paul Bürkner, Niko Huurre, Kateřina Faltejsková, Andrew Gelman, Aki Vehtari (2023). “Simulation-Based Calibration Checking for Bayesian Computation: The Choice of Test Quantities Shapes Sensitivity”. Bayesian Analysis. <a href="https://doi.org/10.1214/23-BA1404" class="uri">https://doi.org/10.1214/23-BA1404</a>.</li>
+</ul>
+</div>
 
 </section>
     </div>
